@@ -98,18 +98,19 @@ stateN0 apply(const Action &a, const stateN0 &st, const vector<vector<unsigned c
 }
 
 /** primera aproximación a la implimentación de la busqueda en anchura */
-list<Action> AnchuraSoloJugador(const stateN0 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
+list<Action> AnchuraSoloJugador_N0(const stateN0 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
 {
   nodeN0 current_node; 
   current_node.st = inicio;
   list<nodeN0> frontier;
-  list<nodeN0> explored;
+  set<nodeN0> explored;
+  list<Action> plan;
   bool SolutionFound = (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c);
   frontier.push_back(current_node);
 
   while (!frontier.empty() and !SolutionFound) {
     frontier.pop_front();
-    explored.push_back(current_node);
+    explored.insert(current_node);
 
     // Generar hijo actFORWARD
     nodeN0 child_forward = current_node;
@@ -121,7 +122,7 @@ list<Action> AnchuraSoloJugador(const stateN0 &inicio, const ubicacion &final, c
 	  current_node.secuencia.push_back(actFORWARD);
       SolutionFound = true;
     }
-    else if (!Find(child_forward.st, frontier) and !Find(child_forward.st, explored)){
+    else if (explored.find(child_forward) == explored.end()){
 		child_forward.secuencia.push_back(actFORWARD);
 		frontier.push_back(child_forward);
     }
@@ -130,25 +131,33 @@ list<Action> AnchuraSoloJugador(const stateN0 &inicio, const ubicacion &final, c
       // Generar hijo actTURN_L
 	  nodeN0 child_turnl = current_node;
       child_turnl.st = apply(actTURN_L, current_node.st, mapa);
-      if (!Find(child_turnl.st, frontier) and !Find(child_turnl.st, explored)){
+      if (explored.find(child_turnl) == explored.end()){
 		child_turnl.secuencia.push_back(actTURN_L);
         frontier.push_back(child_turnl);
       }
       // Generar hijo actTURN_R
 	  nodeN0 child_turnr = current_node;
       child_turnr.st = apply(actTURN_R, current_node.st, mapa);
-      if (!Find(child_turnr.st, frontier) and !Find(child_turnr.st, explored)){
+      if (explored.find(child_turnr) == explored.end()){
 		child_turnr.secuencia.push_back(actTURN_R);
         frontier.push_back(child_turnr);
       }
     }
 
-    if (!SolutionFound){
+    if (!SolutionFound && !frontier.empty()){
       current_node = frontier.front();
+	  while(!frontier.empty() && explored.find(current_node) != explored.end()){
+		frontier.pop_front();
+		current_node = frontier.front();
+	  }
     }
   }
 
-  return current_node.secuencia;
+  if(SolutionFound){
+	plan = current_node.secuencia;
+  }
+
+  return plan;
 }
 
 /** pone a cero todos los elementos de una matriz */
@@ -165,34 +174,59 @@ void AnularMatriz(vector<vector<unsigned char>> &matriz)
 Action ComportamientoJugador::think(Sensores sensores){
  	Action accion = actIDLE;
 
- 	// Incluir aquí el comportamiento del agente jugador
- 	if (!hayPlan){
- 		// Invocar al método de búsqueda
-  		cout << "Calculando plan..." << endl;
-  		c_state.jugador.f = sensores.posF;
-  		c_state.jugador.c = sensores.posC;
-  		c_state.jugador.brujula = sensores.sentido;
- 		 c_state.sonambulo.f = sensores.SONposF;
- 		 c_state.sonambulo.c = sensores.SONposC;
-  		c_state.sonambulo.brujula = sensores.SONsentido;
-  		goal.f = sensores.destinoF;
-  		goal.c = sensores.destinoC;
+	if(sensores.nivel != 4){
+		
+		// Incluir aquí el comportamiento del agente jugador
+ 		if (!hayPlan){
+ 			// Invocar al método de búsqueda
+  			cout << "Calculando plan..." << endl;
+  			c_state.jugador.f = sensores.posF;
+  			c_state.jugador.c = sensores.posC;
+  			c_state.jugador.brujula = sensores.sentido;
+ 			c_state.sonambulo.f = sensores.SONposF;
+ 			c_state.sonambulo.c = sensores.SONposC;
+  			c_state.sonambulo.brujula = sensores.SONsentido;
+  			goal.f = sensores.destinoF;
+  			goal.c = sensores.destinoC;
 
-  		plan = AnchuraSoloJugador(c_state, goal, mapaResultado);
-  		VisualizaPlan(c_state,plan);
-  		hayPlan = true;
- 	}
+			switch(sensores.nivel){
+				case 0:
+					// Solución para el Nivel 0
+					plan = AnchuraSoloJugador_N0(c_state, goal, mapaResultado);
+				break;
+				case 1:
+					// Solución para el nivel 1
 
- 	if (hayPlan and plan.size()>0){
-  		cout << "Ejecutando siguietne acción del plan" << endl;
- 		 accion = plan.front();
-  		plan.pop_front();
- 	}
+				break;
+				case 2:
+					// Solución para el nivel 2
 
- 	if (plan.size()== 0){
-  		cout << "Se completó el plan" << endl;
-  		hayPlan = false;
- 	}
+				break;
+				case 3:
+					// Solución para el nivel 3
+
+				break;
+			}
+  			if(plan.size() > 0){
+				VisualizaPlan(c_state,plan);
+  				hayPlan = true;
+			}
+ 		}
+
+ 		if (hayPlan and plan.size()>0){
+  			cout << "Ejecutando siguietne acción del plan" << endl;
+ 			accion = plan.front();
+  			plan.pop_front();
+ 		}
+
+ 		if (plan.size()== 0){
+  			cout << "Se completó el plan" << endl;
+  			hayPlan = false;
+ 		}
+	}
+ 	else{
+		// Solución para el Nivel 4
+	}
 
  	return accion;
 }
