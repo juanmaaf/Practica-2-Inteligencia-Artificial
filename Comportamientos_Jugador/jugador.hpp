@@ -37,6 +37,41 @@ struct nodeN0{
     }
 };
 
+struct stateN1{
+    ubicacion jugador;
+    ubicacion sonambulo;
+
+    bool operator==(const stateN1 &st) const{
+        return (jugador.f == st.jugador.f && jugador.c == st.jugador.c &&
+        sonambulo.f == st.sonambulo.f && sonambulo.c == st.sonambulo.c &&
+        jugador.brujula == st.jugador.brujula && sonambulo.brujula == st.sonambulo.brujula);
+    }
+
+    bool operator<(const stateN1 &st) const
+    {
+        return (jugador.f < st.jugador.f ||
+               (jugador.f == st.jugador.f && jugador.c < st.jugador.c) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula < st.jugador.brujula) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && sonambulo.f < st.sonambulo.f) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && sonambulo.f == st.sonambulo.f && sonambulo.c < st.sonambulo.c) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && sonambulo.f == st.sonambulo.f && sonambulo.c == st.sonambulo.c && sonambulo.brujula < st.sonambulo.brujula));
+    }
+};
+
+struct nodeN1{
+  stateN1 st;
+  list<Action> secuencia;
+
+  bool operator==(const nodeN1 &nd) const{
+    return (st == nd.st);
+  }
+
+  bool operator<(const nodeN1 &nd) const
+    {
+        return (st < nd.st);
+    }
+};
+
 class ComportamientoJugador : public Comportamiento {
   public:
     ComportamientoJugador(unsigned int size) : Comportamiento(size) {
@@ -45,12 +80,21 @@ class ComportamientoJugador : public Comportamiento {
 
       goal.c = 99;
       goal.f = 99;
+
       c_state.jugador.c = 99;
       c_state.jugador.f = 99;
       c_state.jugador.brujula = norte;
       c_state.sonambulo.c = 99;
       c_state.sonambulo.f = 99;
       c_state.sonambulo.brujula = norte;
+
+      c_state_N1.jugador.c = 99;
+      c_state_N1.jugador.f = 99;
+      c_state_N1.jugador.brujula = norte;
+      c_state_N1.sonambulo.c = 99;
+      c_state_N1.sonambulo.f = 99;
+      c_state_N1.sonambulo.brujula = norte;
+
     }
     ComportamientoJugador(std::vector< std::vector< unsigned char> > mapaR) : Comportamiento(mapaR) {
       // Inicializar Variables de Estado
@@ -62,7 +106,7 @@ class ComportamientoJugador : public Comportamiento {
     int interact(Action accion, int valor);
 
     void VisualizaPlan(const stateN0 &st, const list<Action> &plan);
-
+    void VisualizaPlan_N1(const stateN1 &st, const list<Action> &plan);
 
   private:
     // Declarar Variables de Estado
@@ -70,6 +114,7 @@ class ComportamientoJugador : public Comportamiento {
     bool hayPlan;
     list<Action> plan;
     stateN0 c_state;
+    stateN1 c_state_N1;
     ubicacion goal;
 
 };
