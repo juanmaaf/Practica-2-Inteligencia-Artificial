@@ -203,6 +203,7 @@ bool verSonambuloN1(const stateN1 &estado){
 			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c));
 		break;
 	}
+	return loVe;
 }
 
 /** Encuentra si el elmento item está en lista */
