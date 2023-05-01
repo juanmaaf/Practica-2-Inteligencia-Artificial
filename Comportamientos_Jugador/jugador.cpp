@@ -363,9 +363,9 @@ list<Action> AnchuraSoloSonambulo_N1(const stateN1 &inicio, const ubicacion &fin
 		//child_forward.secuencia = current_node.secuencia;
 		child_sonforward.st = apply_N1(actSON_FORWARD, current_node.st, mapa);
     	if (child_sonforward.st.sonambulo.f == final.f and child_sonforward.st.sonambulo.c == final.c){
-      	current_node = child_sonforward;
-	  	current_node.secuencia.push_back(actSON_FORWARD);
-      	SolutionFound = true;
+      		current_node = child_sonforward;
+	  		current_node.secuencia.push_back(actSON_FORWARD);
+      		SolutionFound = true;
     	} else{
 	  		if (explored.find(child_sonforward) == explored.end()){
 				child_sonforward.secuencia.push_back(actSON_FORWARD);
@@ -373,19 +373,40 @@ list<Action> AnchuraSoloSonambulo_N1(const stateN1 &inicio, const ubicacion &fin
       		}
 		}
 		if (!SolutionFound) {
-      	// Generar hijo actSON_TURN_SL
+      		// Generar hijo actSON_TURN_SL
 	  		nodeN1 child_turnsl = current_node;
       		child_turnsl.st = apply_N1(actSON_TURN_SL, current_node.st, mapa);
       		if (explored.find(child_turnsl) == explored.end()){
 				child_turnsl.secuencia.push_back(actSON_TURN_SL);
         		frontier.push_back(child_turnsl);
       		}
-      	// Generar hijo actSON_TURN_SR
+      		// Generar hijo actSON_TURN_SR
 	  		nodeN1 child_turnsr = current_node;
       		child_turnsr.st = apply_N1(actSON_TURN_SR, current_node.st, mapa);
       		if (explored.find(child_turnsr) == explored.end()){
 				child_turnsr.secuencia.push_back(actSON_TURN_SR);
         		frontier.push_back(child_turnsr);
+      		}
+			// Generar hijo actFORWARD -> Jugador
+      		nodeN1 child_forward = current_node;
+	  		child_forward.st = apply_N1(actFORWARD, current_node.st, mapa);
+	  		if (explored.find(child_forward) == explored.end()){
+				child_forward.secuencia.push_back(actFORWARD);
+				frontier.push_back(child_forward);
+      		}
+	  		// Generar hijo actTURN_L -> Jugador
+	 		nodeN1 child_turnl = current_node;
+      		child_turnl.st = apply_N1(actTURN_L, current_node.st, mapa);
+      		if (explored.find(child_turnl) == explored.end()){
+				child_turnl.secuencia.push_back(actTURN_L);
+        		frontier.push_back(child_turnl);
+      		}
+     		// Generar hijo actTURN_R -> Jugador
+	  		nodeN1 child_turnr = current_node;
+      		child_turnr.st = apply_N1(actTURN_R, current_node.st, mapa);
+      		if (explored.find(child_turnr) == explored.end()){
+				child_turnr.secuencia.push_back(actTURN_R);
+        		frontier.push_back(child_turnr);
       		}
 		}
 	}
@@ -413,7 +434,6 @@ list<Action> AnchuraSoloSonambulo_N1(const stateN1 &inicio, const ubicacion &fin
       	}
 	}
   }	// Fin WHILE
-
     if (!SolutionFound && !frontier.empty()){
       current_node = frontier.front();
 	  while(!frontier.empty() && explored.find(current_node) != explored.end()){
