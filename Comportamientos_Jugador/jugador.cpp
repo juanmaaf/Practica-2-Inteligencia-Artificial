@@ -442,6 +442,20 @@ int CalculaCoste_N3(const stateN3 &st, const Action &accion, const vector<vector
 				else{
 					coste = 25;
 				}
+			} else if (accion == actSON_FORWARD){
+				if(st.sonambuloBikini){
+					coste = 10;
+				}
+				else{
+					coste = 100;
+				}
+			} else if (accion == actSON_TURN_SL || accion == actSON_TURN_SR){
+				if(st.sonambuloBikini){
+					coste = 2;
+				}
+				else{
+					coste = 7;
+				}
 			}
 		break;
 		case 'B':
@@ -459,10 +473,29 @@ int CalculaCoste_N3(const stateN3 &st, const Action &accion, const vector<vector
 				else{
 					coste = 5;
 				}
+			} else if (accion == actSON_FORWARD){
+				if(st.sonambuloZapatillas){
+					coste = 15;
+				}
+				else{
+					coste = 50;
+				}
+			} else if (accion == actSON_TURN_SL || accion == actSON_TURN_SR){
+				if(st.sonambuloZapatillas){
+					coste = 1;
+				}
+				else{
+					coste = 3;
+				}
 			}
 		break;
 		case 'T':
-			coste = 2;
+			if (accion == actSON_TURN_SL || accion == actSON_TURN_SR){
+				coste = 1;
+			}
+			else{
+				coste = 2;
+			}
 		break;
 		default:
 			coste = 1;
@@ -888,7 +921,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 			// Generar hijo actSONFORWARD
 			nodeN3 childson_forward = current_node;
 			childson_forward.coste += CalculaCoste_N3(childson_forward.st, actSON_FORWARD, mapa);
-			childson_forward.heuristica += HeuristicaSonambulo_N3(childson_forward.st, final);
+			childson_forward.heuristica = HeuristicaSonambulo_N3(childson_forward.st, final);
 			childson_forward.suma += childson_forward.coste;
 			childson_forward.suma += childson_forward.heuristica;
 			childson_forward.st = apply_N3(actSON_FORWARD, current_node.st, mapa);
@@ -899,7 +932,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 			// Generar hijo actSON_TURN_SL
 			nodeN3 childson_turnl = current_node;
 			childson_turnl.coste += CalculaCoste_N3(childson_turnl.st, actSON_TURN_SL, mapa);
-			childson_turnl.heuristica += HeuristicaSonambulo_N3(childson_turnl.st, final);
+			childson_turnl.heuristica = HeuristicaSonambulo_N3(childson_turnl.st, final);
 			childson_turnl.suma += childson_turnl.coste;
 			childson_turnl.suma += childson_turnl.heuristica;
 			childson_turnl.st = apply_N3(actSON_TURN_SL, current_node.st, mapa);
@@ -910,7 +943,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 			// Generar hijo actSON_TURN_SR
 			nodeN3 childson_turnr = current_node;
 			childson_turnr.coste += CalculaCoste_N3(childson_turnr.st, actSON_TURN_SR, mapa);
-			childson_turnr.heuristica += HeuristicaSonambulo_N3(childson_turnr.st, final);
+			childson_turnr.heuristica = HeuristicaSonambulo_N3(childson_turnr.st, final);
 			childson_turnr.suma += childson_turnr.coste;
 			childson_turnr.suma += childson_turnr.heuristica;
 			childson_turnr.st = apply_N3(actSON_TURN_SR, current_node.st, mapa);
@@ -921,7 +954,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 			// Generar hijo actFORWARD
 			nodeN3 child_forward = current_node;
 			child_forward.coste += CalculaCoste_N3(child_forward.st, actFORWARD, mapa);
-			child_forward.heuristica += HeuristicaSonambulo_N3(child_forward.st, final);
+			child_forward.heuristica = HeuristicaSonambulo_N3(child_forward.st, final);
 			child_forward.suma += child_forward.coste;
 			child_forward.suma += child_forward.heuristica;
 			child_forward.st = apply_N3(actFORWARD, current_node.st, mapa);
@@ -932,7 +965,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 			// Generar hijo actTURN_L
 			nodeN3 child_turnl = current_node;
 			child_turnl.coste += CalculaCoste_N3(child_turnl.st, actTURN_L, mapa);
-			child_turnl.heuristica += HeuristicaSonambulo_N3(child_turnl.st, final);
+			child_turnl.heuristica = HeuristicaSonambulo_N3(child_turnl.st, final);
 			child_turnl.suma += child_turnl.coste;
 			child_turnl.suma += child_turnl.heuristica;
 			child_turnl.st = apply_N3(actTURN_L, current_node.st, mapa);
@@ -943,7 +976,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 			// Generar hijo actTURN_R
 			nodeN3 child_turnr = current_node;
 			child_turnr.coste += CalculaCoste_N3(child_turnr.st, actTURN_R, mapa);
-			child_turnr.heuristica += HeuristicaSonambulo_N3(child_turnr.st, final);
+			child_turnr.heuristica = HeuristicaSonambulo_N3(child_turnr.st, final);
 			child_turnr.suma += child_turnr.coste;
 			child_turnr.suma += child_turnr.heuristica;
 			child_turnr.st = apply_N3(actTURN_R, current_node.st, mapa);
@@ -956,7 +989,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 			// Generar hijo actFORWARD
 			nodeN3 child_forward = current_node;
 			child_forward.coste += CalculaCoste_N3(child_forward.st, actFORWARD, mapa);
-			child_forward.heuristica += HeuristicaSonambulo_N3(child_forward.st, final);
+			child_forward.heuristica = HeuristicaSonambulo_N3(child_forward.st, final);
 			child_forward.suma += child_forward.coste;
 			child_forward.suma += child_forward.heuristica;
 			child_forward.st = apply_N3(actFORWARD, current_node.st, mapa);
@@ -967,7 +1000,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 			// Generar hijo actTURN_L
 			nodeN3 child_turnl = current_node;
 			child_turnl.coste += CalculaCoste_N3(child_turnl.st, actTURN_L, mapa);
-			child_turnl.heuristica += HeuristicaSonambulo_N3(child_turnl.st, final);
+			child_turnl.heuristica = HeuristicaSonambulo_N3(child_turnl.st, final);
 			child_turnl.suma += child_turnl.coste;
 			child_turnl.suma += child_turnl.heuristica;
 			child_turnl.st = apply_N3(actTURN_L, current_node.st, mapa);
@@ -978,7 +1011,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 			// Generar hijo actTURN_R
 			nodeN3 child_turnr = current_node;
 			child_turnr.coste += CalculaCoste_N3(child_turnr.st, actTURN_R, mapa);
-			child_turnr.heuristica += HeuristicaSonambulo_N3(child_turnr.st, final);
+			child_turnr.heuristica = HeuristicaSonambulo_N3(child_turnr.st, final);
 			child_turnr.suma += child_turnr.coste;
 			child_turnr.suma += child_turnr.heuristica;
 			child_turnr.st = apply_N3(actTURN_R, current_node.st, mapa);
