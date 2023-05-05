@@ -569,10 +569,38 @@ list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &fina
 			child_forward.secuencia.push_back(actFORWARD);
 			frontier.push(child_forward);
 		}
-	}
-  
 
-  return plan;
+		if(!SolutionFound){
+			// Generar hijo actTURN_L
+	  		nodeN2 child_turnl = current_node;
+      		child_turnl.st = apply_N2(actTURN_L, current_node.st, mapa);
+      		if (explored.find(child_turnl) == explored.end()){
+				child_turnl.secuencia.push_back(actTURN_L);
+       			frontier.push(child_turnl);
+      		}
+      		// Generar hijo actTURN_R
+	  		nodeN2 child_turnr = current_node;
+      		child_turnr.st = apply_N2(actTURN_R, current_node.st, mapa);
+      		if (explored.find(child_turnr) == explored.end()){
+				child_turnr.secuencia.push_back(actTURN_R);
+        		frontier.push(child_turnr);
+      		}
+		}
+
+		if (!SolutionFound && !frontier.empty()){
+      		current_node = frontier.top();
+	  		while(!frontier.empty() && explored.find(current_node) != explored.end()){
+				frontier.pop();
+				current_node = frontier.top();
+	  		}
+   		}	
+	}
+
+	if(SolutionFound){
+		plan = current_node.secuencia;
+	}
+
+	return plan;
 }
 
 /** pone a cero todos los elementos de una matriz */
