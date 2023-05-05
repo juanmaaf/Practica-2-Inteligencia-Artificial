@@ -214,6 +214,157 @@ bool verSonambuloN1(const stateN1 &estado){
 	return loVe;
 }
 
+bool verSonambuloN3(const stateN3 &estado){
+	bool loVe = false;
+
+	switch(estado.jugador.brujula){
+		case norte:
+			if ((estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) ||
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c))
+				loVe = true;
+		case noreste:
+			if ((estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c + 1 == estado.sonambulo.c) || 
+			(estado.jugador.f  == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) ||
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c))
+				loVe = true;
+		break;
+		case este:	
+			if ((estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) ||
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c))
+				loVe = true;
+		break;
+		case sureste:
+			if ((estado.jugador.f == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) ||
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c))
+				loVe = true;
+		break;
+		case sur:
+			if ((estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) ||
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c))
+				loVe = true;
+		break;
+		case suroeste:
+			if ((estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f  == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) ||
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c))
+				loVe = true;
+		break;
+		case oeste:
+			if ((estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) ||
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c))
+				loVe = true;
+		break;
+		case noroeste:
+			if ((estado.jugador.f == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
+			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) ||
+			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c))
+				loVe = true;
+		break;
+	}
+	return loVe;
+}
+
 /** Encuentra si el elmento item está en lista */
 bool Find(const stateN0 &item, const list<nodeN0> &lista)
 {
@@ -271,6 +422,61 @@ int CalculaCoste(const stateN2 &st, const Action &accion, const vector<vector<un
 	}
 	return coste;
 }
+
+int CalculaCoste_N3(const stateN3 &st, const Action &accion, const vector<vector<unsigned char>> &mapa){
+	int coste;
+	char tipo_casilla = mapa[st.jugador.f][st.jugador.c];
+	switch(tipo_casilla){
+		case 'A':
+			if(accion == actFORWARD){
+				if(st.jugadorBikini){
+					coste = 10;
+				}
+				else{
+					coste = 100;
+				}
+			} else if (accion == actTURN_L || accion == actTURN_R){
+				if(st.jugadorBikini){
+					coste = 5;
+				}
+				else{
+					coste = 25;
+				}
+			}
+		break;
+		case 'B':
+			if(accion == actFORWARD){
+				if(st.jugadorZapatillas){
+					coste = 15;
+				}
+				else{
+					coste = 50;
+				}
+			} else if (accion == actTURN_L || accion == actTURN_R){
+				if(st.jugadorZapatillas){
+					coste = 1;
+				}
+				else{
+					coste = 5;
+				}
+			}
+		break;
+		case 'T':
+			coste = 2;
+		break;
+		default:
+			coste = 1;
+		break;
+	}
+	return coste;
+}
+
+int HeuristicaSonambulo_N3(const stateN3 &st, const ubicacion &final){
+	int valorFilas = abs(st.jugador.f - final.f);
+	int valorColumnas = abs(st.jugador.c - final.c);
+	return max(valorFilas, valorColumnas);
+}
+
 /** Devuelve el estado que se genera si el agente puede avanzar.
  * Si no puede avanzar, se devuelve como salida el mismo estado de entrada.
  */
@@ -303,7 +509,7 @@ stateN1 apply_N1(const Action &a, const stateN1 &st, const vector<vector<unsigne
   switch (a){
   	case actFORWARD: // si casilla delante es transitable y no está ocupada por el sonámbulo
     	sig_ubicacion = NextCasilla(st.jugador);
-    	if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion == st.sonambulo)){
+    	if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion.f == st.sonambulo.f && sig_ubicacion.c == st.sonambulo.c)){
       		st_result.jugador = sig_ubicacion;
     	}
     break;
@@ -317,7 +523,7 @@ stateN1 apply_N1(const Action &a, const stateN1 &st, const vector<vector<unsigne
 
 	case actSON_FORWARD:
 		sig_ubicacion = NextCasilla(st.sonambulo);
-    	if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion == st.jugador)){
+    	if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion.f == st.jugador.f && sig_ubicacion.c == st.jugador.c)){
       		st_result.sonambulo = sig_ubicacion;
     	}
 	break;
@@ -637,16 +843,18 @@ list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &fina
 }
 
 /** Implementación coste uniforme nivel 2 */
-list<Action> AEstrella_N3(const stateN2 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
+list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
 {
-	nodeN2 current_node; 
+	nodeN3 current_node; 
 	current_node.st = inicio;
 	current_node.coste = 0;
-	priority_queue<nodeN2> frontier;
-	set<stateN2> explored;
+	current_node.heuristica = 0;
+	current_node.suma = 0;
+	priority_queue<nodeN3> frontier;
+	set<stateN3> explored;
 	list<Action> plan;
 
-	bool SolutionFound = (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c);
+	bool SolutionFound = (current_node.st.sonambulo.f == final.f and current_node.st.sonambulo.c == final.c);
 	frontier.push(current_node);
 
 	while(!frontier.empty() and !SolutionFound){
@@ -664,30 +872,120 @@ list<Action> AEstrella_N3(const stateN2 &inicio, const ubicacion &final, const v
 				current_node.st.jugadorBikini = false;
 			}
 		}
+		if(mapa[current_node.st.sonambulo.f][current_node.st.sonambulo.c] == 'K'){
+			current_node.st.sonambuloBikini = true;
+			if(current_node.st.sonambuloZapatillas){
+				current_node.st.sonambuloZapatillas = false;
+			}
+		} else if(mapa[current_node.st.sonambulo.f][current_node.st.sonambulo.c] == 'D'){
+			current_node.st.sonambuloZapatillas = true;
+			if(current_node.st.sonambuloBikini){
+				current_node.st.sonambuloBikini = false;
+			}
+		}
 
-		// Generar hijo actFORWARD
-		nodeN2 child_forward = current_node;
-		child_forward.coste += CalculaCoste(child_forward.st, actFORWARD, mapa);
-		child_forward.st = apply_N2(actFORWARD, current_node.st, mapa);
-		if (explored.find(child_forward.st) == explored.end()){
-			child_forward.secuencia.push_back(actFORWARD);
-			frontier.push(child_forward);
+		if(verSonambuloN3(current_node.st)){ // Evalúo todos los nodos
+			// Generar hijo actSONFORWARD
+			nodeN3 childson_forward = current_node;
+			childson_forward.coste += CalculaCoste_N3(childson_forward.st, actSON_FORWARD, mapa);
+			childson_forward.heuristica += HeuristicaSonambulo_N3(childson_forward.st, final);
+			childson_forward.suma += childson_forward.coste;
+			childson_forward.suma += childson_forward.heuristica;
+			childson_forward.st = apply_N3(actSON_FORWARD, current_node.st, mapa);
+			if (explored.find(childson_forward.st) == explored.end()){
+				childson_forward.secuencia.push_back(actSON_FORWARD);
+				frontier.push(childson_forward);
+			}
+			// Generar hijo actSON_TURN_SL
+			nodeN3 childson_turnl = current_node;
+			childson_turnl.coste += CalculaCoste_N3(childson_turnl.st, actSON_TURN_SL, mapa);
+			childson_turnl.heuristica += HeuristicaSonambulo_N3(childson_turnl.st, final);
+			childson_turnl.suma += childson_turnl.coste;
+			childson_turnl.suma += childson_turnl.heuristica;
+			childson_turnl.st = apply_N3(actSON_TURN_SL, current_node.st, mapa);
+			if (explored.find(childson_turnl.st) == explored.end()){
+				childson_turnl.secuencia.push_back(actSON_TURN_SL);
+				frontier.push(childson_turnl);
+			}
+			// Generar hijo actSON_TURN_SR
+			nodeN3 childson_turnr = current_node;
+			childson_turnr.coste += CalculaCoste_N3(childson_turnr.st, actSON_TURN_SR, mapa);
+			childson_turnr.heuristica += HeuristicaSonambulo_N3(childson_turnr.st, final);
+			childson_turnr.suma += childson_turnr.coste;
+			childson_turnr.suma += childson_turnr.heuristica;
+			childson_turnr.st = apply_N3(actSON_TURN_SR, current_node.st, mapa);
+			if (explored.find(childson_turnr.st) == explored.end()){
+				childson_turnr.secuencia.push_back(actSON_TURN_SR);
+				frontier.push(childson_turnr);
+			}
+			// Generar hijo actFORWARD
+			nodeN3 child_forward = current_node;
+			child_forward.coste += CalculaCoste_N3(child_forward.st, actFORWARD, mapa);
+			child_forward.heuristica += HeuristicaSonambulo_N3(child_forward.st, final);
+			child_forward.suma += child_forward.coste;
+			child_forward.suma += child_forward.heuristica;
+			child_forward.st = apply_N3(actFORWARD, current_node.st, mapa);
+			if (explored.find(child_forward.st) == explored.end()){
+				child_forward.secuencia.push_back(actFORWARD);
+				frontier.push(child_forward);
+			}
+			// Generar hijo actTURN_L
+			nodeN3 child_turnl = current_node;
+			child_turnl.coste += CalculaCoste_N3(child_turnl.st, actTURN_L, mapa);
+			child_turnl.heuristica += HeuristicaSonambulo_N3(child_turnl.st, final);
+			child_turnl.suma += child_turnl.coste;
+			child_turnl.suma += child_turnl.heuristica;
+			child_turnl.st = apply_N3(actTURN_L, current_node.st, mapa);
+			if (explored.find(child_turnl.st) == explored.end()){
+				child_turnl.secuencia.push_back(actTURN_L);
+				frontier.push(child_turnl);
+			}
+			// Generar hijo actTURN_R
+			nodeN3 child_turnr = current_node;
+			child_turnr.coste += CalculaCoste_N3(child_turnr.st, actTURN_R, mapa);
+			child_turnr.heuristica += HeuristicaSonambulo_N3(child_turnr.st, final);
+			child_turnr.suma += child_turnr.coste;
+			child_turnr.suma += child_turnr.heuristica;
+			child_turnr.st = apply_N3(actTURN_R, current_node.st, mapa);
+			if (explored.find(child_turnr.st) == explored.end()){
+				child_turnr.secuencia.push_back(actTURN_R);
+				frontier.push(child_turnr);
+			}
 		}
-		// Generar hijo actTURN_L
-		nodeN2 child_turnl = current_node;
-		child_turnl.coste += CalculaCoste(child_turnl.st, actTURN_L, mapa);
-		child_turnl.st = apply_N2(actTURN_L, current_node.st, mapa);
-		if (explored.find(child_turnl.st) == explored.end()){
-			child_turnl.secuencia.push_back(actTURN_L);
-			frontier.push(child_turnl);
-		}
-		// Generar hijo actTURN_R
-		nodeN2 child_turnr = current_node;
-		child_turnr.coste += CalculaCoste(child_turnr.st, actTURN_R, mapa);
-		child_turnr.st = apply_N2(actTURN_R, current_node.st, mapa);
-		if (explored.find(child_turnr.st) == explored.end()){
-			child_turnr.secuencia.push_back(actTURN_R);
-			frontier.push(child_turnr);
+		else{	// Solo se puede mover al Jugador
+			// Generar hijo actFORWARD
+			nodeN3 child_forward = current_node;
+			child_forward.coste += CalculaCoste_N3(child_forward.st, actFORWARD, mapa);
+			child_forward.heuristica += HeuristicaSonambulo_N3(child_forward.st, final);
+			child_forward.suma += child_forward.coste;
+			child_forward.suma += child_forward.heuristica;
+			child_forward.st = apply_N3(actFORWARD, current_node.st, mapa);
+			if (explored.find(child_forward.st) == explored.end()){
+				child_forward.secuencia.push_back(actFORWARD);
+				frontier.push(child_forward);
+			}
+			// Generar hijo actTURN_L
+			nodeN3 child_turnl = current_node;
+			child_turnl.coste += CalculaCoste_N3(child_turnl.st, actTURN_L, mapa);
+			child_turnl.heuristica += HeuristicaSonambulo_N3(child_turnl.st, final);
+			child_turnl.suma += child_turnl.coste;
+			child_turnl.suma += child_turnl.heuristica;
+			child_turnl.st = apply_N3(actTURN_L, current_node.st, mapa);
+			if (explored.find(child_turnl.st) == explored.end()){
+				child_turnl.secuencia.push_back(actTURN_L);
+				frontier.push(child_turnl);
+			}
+			// Generar hijo actTURN_R
+			nodeN3 child_turnr = current_node;
+			child_turnr.coste += CalculaCoste_N3(child_turnr.st, actTURN_R, mapa);
+			child_turnr.heuristica += HeuristicaSonambulo_N3(child_turnr.st, final);
+			child_turnr.suma += child_turnr.coste;
+			child_turnr.suma += child_turnr.heuristica;
+			child_turnr.st = apply_N3(actTURN_R, current_node.st, mapa);
+			if (explored.find(child_turnr.st) == explored.end()){
+				child_turnr.secuencia.push_back(actTURN_R);
+				frontier.push(child_turnr);
+			}
 		}
 
 		if (!SolutionFound && !frontier.empty()){
@@ -696,7 +994,7 @@ list<Action> AEstrella_N3(const stateN2 &inicio, const ubicacion &final, const v
 				frontier.pop();
 				current_node = frontier.top();
 	  		}
-			if (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c){
+			if (current_node.st.sonambulo.f == final.f and current_node.st.sonambulo.c == final.c){
 				SolutionFound = true;
 			}
    		}	
@@ -786,8 +1084,33 @@ Action ComportamientoJugador::think(Sensores sensores){
 					}
 				break;
 				case 3:
+					c_state_N3.jugador.f = sensores.posF;
+      				c_state_N3.jugador.c = sensores.posC;
+     				c_state_N3.jugador.brujula = sensores.sentido;
+					c_state_N3.sonambulo.f = sensores.SONposF;
+      				c_state_N3.sonambulo.c = sensores.SONposC;
+      				c_state_N3.sonambulo.brujula = sensores.SONsentido;
+					c_state_N3.jugadorBikini = false;
+					c_state_N3.jugadorZapatillas = false;
+					c_state_N3.sonambuloBikini = false;
+					c_state_N3.sonambuloZapatillas = false;
 					// Solución para el nivel 3
+					if(mapaResultado[sensores.posF][sensores.posC] == 'K'){
+						c_state_N3.jugadorBikini = true;
+					} else if(mapaResultado[sensores.posF][sensores.posC] == 'D'){
+						c_state_N3.jugadorZapatillas = true;
+					}
+					if(mapaResultado[sensores.SONposF][sensores.SONposC] == 'K'){
+						c_state_N3.sonambuloBikini = true;
+					} else if(mapaResultado[sensores.SONposF][sensores.SONposC] == 'D'){
+						c_state_N3.sonambuloZapatillas = true;
+					}
 
+					plan = 	AEstrella_N3(c_state_N3, goal, mapaResultado);
+					if(plan.size() > 0){
+						VisualizaPlan_N3(c_state_N3,plan);
+  						hayPlan = true;
+					}
 				break;
 			}
  		}
@@ -878,6 +1201,38 @@ void ComportamientoJugador::VisualizaPlan_N1(const stateN1 &st, const list<Actio
 void ComportamientoJugador::VisualizaPlan_N2(const stateN2 &st, const list<Action> &plan){
   AnularMatriz(mapaConPlan);
   stateN2 cst = st;
+
+  auto it = plan.begin();
+  while (it != plan.end()){
+    switch (*it){
+      case actFORWARD:
+        cst.jugador = NextCasilla(cst.jugador);
+	  mapaConPlan[cst.jugador.f][cst.jugador.c] = 1;
+	  break;
+	case actTURN_R:
+        cst.jugador.brujula = (Orientacion)((cst.jugador.brujula + 2) % 8);
+	  break;
+	case actTURN_L:
+	  cst.jugador.brujula = (Orientacion)((cst.jugador.brujula + 6) % 8);
+	  break;
+	case actSON_FORWARD:
+	  cst.sonambulo = NextCasilla(cst.sonambulo);
+	  mapaConPlan[cst.sonambulo.f][cst.sonambulo.c] = 2;
+	  break;
+	case actSON_TURN_SR:
+	  cst.sonambulo.brujula = (Orientacion)((cst.sonambulo.brujula + 1) % 8);
+	  break;
+	case actSON_TURN_SL:
+	  cst.sonambulo.brujula = (Orientacion)((cst.sonambulo.brujula + 7) % 8);
+	  break;
+    }
+    it++;
+  }
+}
+
+void ComportamientoJugador::VisualizaPlan_N3(const stateN3 &st, const list<Action> &plan){
+  AnularMatriz(mapaConPlan);
+  stateN3 cst = st;
 
   auto it = plan.begin();
   while (it != plan.end()){

@@ -141,7 +141,7 @@ struct stateN3{
 };
 
 struct nodeN3{
-  stateN2 st;
+  stateN3 st;
   list<Action> secuencia;
   int coste;
   int heuristica;
@@ -189,6 +189,17 @@ class ComportamientoJugador : public Comportamiento {
       c_state_N2.jugadorBikini = false;
       c_state_N2.jugadorZapatillas = false;
 
+      c_state_N3.jugador.c = 99;
+      c_state_N3.jugador.f = 99;
+      c_state_N3.jugador.brujula = norte;
+      c_state_N3.sonambulo.c = 99;
+      c_state_N3.sonambulo.f = 99;
+      c_state_N3.sonambulo.brujula = norte;
+      c_state_N3.jugadorBikini = false;
+      c_state_N3.jugadorZapatillas = false;
+      c_state_N3.sonambuloBikini = false;
+      c_state_N3.sonambuloZapatillas = false;
+
     }
     ComportamientoJugador(std::vector< std::vector< unsigned char> > mapaR) : Comportamiento(mapaR) {
       // Inicializar Variables de Estado
@@ -202,6 +213,7 @@ class ComportamientoJugador : public Comportamiento {
     void VisualizaPlan(const stateN0 &st, const list<Action> &plan);
     void VisualizaPlan_N1(const stateN1 &st, const list<Action> &plan);
     void VisualizaPlan_N2(const stateN2 &st, const list<Action> &plan);
+    void VisualizaPlan_N3(const stateN3 &st, const list<Action> &plan);
 
   private:
     // Declarar Variables de Estado
@@ -211,6 +223,7 @@ class ComportamientoJugador : public Comportamiento {
     stateN0 c_state;
     stateN1 c_state_N1;
     stateN2 c_state_N2;
+    stateN3 c_state_N3;
     
     ubicacion goal;
 
