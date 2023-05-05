@@ -363,8 +363,8 @@ list<Action> AnchuraSoloSonambulo_N1(const stateN1 &inicio, const ubicacion &fin
     frontier.pop_front();
     explored.insert(current_node);
 
-	if(verSonambuloN1(current_node.st)){	//Movemos al Sonámbulo
-		// Generar hijo actFORWARD
+	if(verSonambuloN1(current_node.st)){	//Mover Sonámbulo teóricamente -> Debemos evaluar todos los nodos
+		// Generar hijo actSONFORWARD
     	nodeN1 child_sonforward = current_node;
 	
 		//child_forward.secuencia = current_node.secuencia;
@@ -372,75 +372,74 @@ list<Action> AnchuraSoloSonambulo_N1(const stateN1 &inicio, const ubicacion &fin
     	if (child_sonforward.st.sonambulo.f == final.f and child_sonforward.st.sonambulo.c == final.c){
       		current_node = child_sonforward;
 	  		current_node.secuencia.push_back(actSON_FORWARD);
-      		SolutionFound = true;
-    	} else{
-	  		if (explored.find(child_sonforward) == explored.end()){
-				child_sonforward.secuencia.push_back(actSON_FORWARD);
-				frontier.push_back(child_sonforward);
+     		SolutionFound = true;
+    	}
+    	else if (explored.find(child_sonforward) == explored.end()){
+			child_sonforward.secuencia.push_back(actSON_FORWARD);
+			frontier.push_back(child_sonforward);
+    	}
+
+    	if (!SolutionFound) { //
+      		// Generar hijo actTURN_SL
+	  		nodeN1 child_sonturnl = current_node;
+     		child_sonturnl.st = apply_N1(actSON_TURN_SL, current_node.st, mapa);
+      		if (explored.find(child_sonturnl) == explored.end()){
+				child_sonturnl.secuencia.push_back(actSON_TURN_SL);
+        		frontier.push_back(child_sonturnl);
       		}
-		}
-		if (!SolutionFound) {
-      		// Generar hijo actSON_TURN_SL
-	  		nodeN1 child_turnsl = current_node;
-      		child_turnsl.st = apply_N1(actSON_TURN_SL, current_node.st, mapa);
-      		if (explored.find(child_turnsl) == explored.end()){
-				child_turnsl.secuencia.push_back(actSON_TURN_SL);
-        		frontier.push_back(child_turnsl);
-      		}
-      		// Generar hijo actSON_TURN_SR
-	  		nodeN1 child_turnsr = current_node;
-      		child_turnsr.st = apply_N1(actSON_TURN_SR, current_node.st, mapa);
-      		if (explored.find(child_turnsr) == explored.end()){
-				child_turnsr.secuencia.push_back(actSON_TURN_SR);
-        		frontier.push_back(child_turnsr);
+     	 	// Generar hijo actTURN_SR
+	  		nodeN1 child_sonturnr = current_node;
+      		child_sonturnr.st = apply_N1(actSON_TURN_SR, current_node.st, mapa);
+     		if (explored.find(child_sonturnr) == explored.end()){
+				child_sonturnr.secuencia.push_back(actSON_TURN_SR);
+        		frontier.push_back(child_sonturnr);
       		}
 			// Generar hijo actFORWARD -> Jugador
-      		nodeN1 child_forward = current_node;
-	  		child_forward.st = apply_N1(actFORWARD, current_node.st, mapa);
-	  		if (explored.find(child_forward) == explored.end()){
+			nodeN1 child_forward = current_node;
+			child_forward.st = apply_N1(actFORWARD, current_node.st, mapa);
+			if (explored.find(child_forward) == explored.end()){
 				child_forward.secuencia.push_back(actFORWARD);
 				frontier.push_back(child_forward);
-      		}
-	  		// Generar hijo actTURN_L -> Jugador
+    		} 
+			// Generar hijo actTURN_L -> Jugador
 	 		nodeN1 child_turnl = current_node;
       		child_turnl.st = apply_N1(actTURN_L, current_node.st, mapa);
       		if (explored.find(child_turnl) == explored.end()){
 				child_turnl.secuencia.push_back(actTURN_L);
         		frontier.push_back(child_turnl);
-      		}
-     		// Generar hijo actTURN_R -> Jugador
+      		}	
+      		// Generar hijo actTURN_R -> Jugador
 	  		nodeN1 child_turnr = current_node;
-      		child_turnr.st = apply_N1(actTURN_R, current_node.st, mapa);
+     		child_turnr.st = apply_N1(actTURN_R, current_node.st, mapa);
       		if (explored.find(child_turnr) == explored.end()){
 				child_turnr.secuencia.push_back(actTURN_R);
         		frontier.push_back(child_turnr);
       		}
-		}
-	}
-    else{	// Movemos al Jugador
-		// Generar hijo actFORWARD -> Jugador
-      	nodeN1 child_forward = current_node;
-	  	child_forward.st = apply_N1(actFORWARD, current_node.st, mapa);
-	  	if (explored.find(child_forward) == explored.end()){
+    	}
+	} else{	// Mover Jugador
+		// Generar hijo actFORWARD
+		nodeN1 child_forward = current_node;
+		child_forward.st = apply_N1(actFORWARD, current_node.st, mapa);
+		if (explored.find(child_forward) == explored.end()){
 			child_forward.secuencia.push_back(actFORWARD);
 			frontier.push_back(child_forward);
-      	}
-	  	// Generar hijo actTURN_L -> Jugador
-	 	 nodeN1 child_turnl = current_node;
+    	}
+		// Generar hijo actTURN_L
+	 	nodeN1 child_turnl = current_node;
       	child_turnl.st = apply_N1(actTURN_L, current_node.st, mapa);
       	if (explored.find(child_turnl) == explored.end()){
 			child_turnl.secuencia.push_back(actTURN_L);
         	frontier.push_back(child_turnl);
-      	}
-     	 // Generar hijo actTURN_R -> Jugador
+      	}	
+      	// Generar hijo actTURN_R
 	  	nodeN1 child_turnr = current_node;
-      	child_turnr.st = apply_N1(actTURN_R, current_node.st, mapa);
+     	child_turnr.st = apply_N1(actTURN_R, current_node.st, mapa);
       	if (explored.find(child_turnr) == explored.end()){
 			child_turnr.secuencia.push_back(actTURN_R);
         	frontier.push_back(child_turnr);
       	}
 	}
-  }	// Fin WHILE
+
     if (!SolutionFound && !frontier.empty()){
       current_node = frontier.front();
 	  while(!frontier.empty() && explored.find(current_node) != explored.end()){
@@ -448,6 +447,7 @@ list<Action> AnchuraSoloSonambulo_N1(const stateN1 &inicio, const ubicacion &fin
 		current_node = frontier.front();
 	  }
     }
+  }
 
   if(SolutionFound){
 	plan = current_node.secuencia;
@@ -483,8 +483,8 @@ Action ComportamientoJugador::think(Sensores sensores){
  			c_state.sonambulo.c = sensores.SONposC;
   			c_state.sonambulo.brujula = sensores.SONsentido;
 
-			c_state_N1.jugador.c = sensores.posF;
-      		c_state_N1.jugador.f = sensores.posC;
+			c_state_N1.jugador.f = sensores.posF;
+      		c_state_N1.jugador.c = sensores.posC;
      		c_state_N1.jugador.brujula = sensores.sentido;
 			c_state_N1.sonambulo.f = sensores.SONposF;
       		c_state_N1.sonambulo.c = sensores.SONposC;
