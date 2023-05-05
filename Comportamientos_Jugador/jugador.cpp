@@ -285,6 +285,28 @@ stateN1 apply_N1(const Action &a, const stateN1 &st, const vector<vector<unsigne
   return st_result;
 }
 
+stateN2 apply_N2(const Action &a, const stateN2 &st, const vector<vector<unsigned char>> &mapa)
+{
+  stateN2 st_result = st;
+  ubicacion sig_ubicacion;
+  switch (a){
+  case actFORWARD: // si casilla delante es transitable y no está ocupada por el sonámbulo
+    sig_ubicacion = NextCasilla(st.jugador);
+    if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion == st.sonambulo)){
+      st_result.jugador = sig_ubicacion;
+    }
+    break;
+  case actTURN_L:
+    st_result.jugador.brujula = static_cast<Orientacion>((st_result.jugador.brujula + 6) % 8);
+    break;
+
+  case actTURN_R:
+    st_result.jugador.brujula = static_cast<Orientacion>((st_result.jugador.brujula + 2) % 8);
+    break;
+  }
+  return st_result;
+}
+
 /** Implementación búsqueda en anchura nivel 0 */
 list<Action> AnchuraSoloJugador_N0(const stateN0 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
 {
@@ -456,6 +478,69 @@ list<Action> AnchuraSoloSonambulo_N1(const stateN1 &inicio, const ubicacion &fin
   return plan;
 }
 
+/** Implementación búsqueda en anchura nivel 1 */
+list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
+{
+ nodeN2 current_node; 
+  current_node.st = inicio;
+  list<nodeN2> frontier;
+  set<nodeN2> explored;
+  list<Action> plan;
+  bool SolutionFound = (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c);
+  frontier.push_back(current_node);
+
+  while (!frontier.empty() and !SolutionFound) {
+    frontier.pop_front();
+    explored.insert(current_node);
+
+    // Generar hijo actFORWARD
+    nodeN2 child_forward = current_node;
+	
+	//child_forward.secuencia = current_node.secuencia;
+	child_forward.st = apply_N2(actFORWARD, current_node.st, mapa);
+    if (child_forward.st.jugador.f == final.f and child_forward.st.jugador.c == final.c){
+      current_node = child_forward;
+	  current_node.secuencia.push_back(actFORWARD);
+      SolutionFound = true;
+    }
+    else if (explored.find(child_forward) == explored.end()){
+		child_forward.secuencia.push_back(actFORWARD);
+		frontier.push_back(child_forward);
+    }
+
+    if (!SolutionFound) {
+      // Generar hijo actTURN_L
+	  nodeN2 child_turnl = current_node;
+      child_turnl.st = apply_N2(actTURN_L, current_node.st, mapa);
+      if (explored.find(child_turnl) == explored.end()){
+		child_turnl.secuencia.push_back(actTURN_L);
+        frontier.push_back(child_turnl);
+      }
+      // Generar hijo actTURN_R
+	  nodeN2 child_turnr = current_node;
+      child_turnr.st = apply_N2(actTURN_R, current_node.st, mapa);
+      if (explored.find(child_turnr) == explored.end()){
+		child_turnr.secuencia.push_back(actTURN_R);
+        frontier.push_back(child_turnr);
+      }
+    }
+
+    if (!SolutionFound && !frontier.empty()){
+      current_node = frontier.front();
+	  while(!frontier.empty() && explored.find(current_node) != explored.end()){
+		frontier.pop_front();
+		current_node = frontier.front();
+	  }
+    }
+  }
+
+  if(SolutionFound){
+	plan = current_node.secuencia;
+  }
+
+  return plan;
+}
+
 /** pone a cero todos los elementos de una matriz */
 void AnularMatriz(vector<vector<unsigned char>> &matriz)
 {
@@ -476,25 +561,18 @@ Action ComportamientoJugador::think(Sensores sensores){
  		if (!hayPlan){
  			// Invocar al método de búsqueda
   			cout << "Calculando plan..." << endl;
-  			c_state.jugador.f = sensores.posF;
-  			c_state.jugador.c = sensores.posC;
-  			c_state.jugador.brujula = sensores.sentido;
- 			c_state.sonambulo.f = sensores.SONposF;
- 			c_state.sonambulo.c = sensores.SONposC;
-  			c_state.sonambulo.brujula = sensores.SONsentido;
-
-			c_state_N1.jugador.f = sensores.posF;
-      		c_state_N1.jugador.c = sensores.posC;
-     		c_state_N1.jugador.brujula = sensores.sentido;
-			c_state_N1.sonambulo.f = sensores.SONposF;
-      		c_state_N1.sonambulo.c = sensores.SONposC;
-      		c_state_N1.sonambulo.brujula = sensores.SONsentido;
-
+  		
   			goal.f = sensores.destinoF;
   			goal.c = sensores.destinoC;
 
 			switch(sensores.nivel){
 				case 0:
+					c_state.jugador.f = sensores.posF;
+  					c_state.jugador.c = sensores.posC;
+  					c_state.jugador.brujula = sensores.sentido;
+ 					c_state.sonambulo.f = sensores.SONposF;
+ 					c_state.sonambulo.c = sensores.SONposC;
+  					c_state.sonambulo.brujula = sensores.SONsentido;
 					// Solución para el Nivel 0
 					plan = AnchuraSoloJugador_N0(c_state, goal, mapaResultado);
 					if(plan.size() > 0){
@@ -503,6 +581,12 @@ Action ComportamientoJugador::think(Sensores sensores){
 					}
 				break;
 				case 1:
+					c_state_N1.jugador.f = sensores.posF;
+      				c_state_N1.jugador.c = sensores.posC;
+     				c_state_N1.jugador.brujula = sensores.sentido;
+					c_state_N1.sonambulo.f = sensores.SONposF;
+      				c_state_N1.sonambulo.c = sensores.SONposC;
+      				c_state_N1.sonambulo.brujula = sensores.SONsentido;
 					// Solución para el nivel 1
 					plan = AnchuraSoloSonambulo_N1(c_state_N1, goal, mapaResultado);
 					if(plan.size() > 0){
@@ -511,8 +595,18 @@ Action ComportamientoJugador::think(Sensores sensores){
 					}
 				break;
 				case 2:
+					c_state_N2.jugador.f = sensores.posF;
+      				c_state_N2.jugador.c = sensores.posC;
+     				c_state_N2.jugador.brujula = sensores.sentido;
+					c_state_N2.sonambulo.f = sensores.SONposF;
+      				c_state_N2.sonambulo.c = sensores.SONposC;
+      				c_state_N2.sonambulo.brujula = sensores.SONsentido;
 					// Solución para el nivel 2
-
+					plan = 	DijkstraSoloJugador_N2(c_state_N2, goal, mapaResultado);
+					if(plan.size() > 0){
+						VisualizaPlan_N2(c_state_N2,plan);
+  						hayPlan = true;
+					}
 				break;
 				case 3:
 					// Solución para el nivel 3
@@ -575,6 +669,38 @@ void ComportamientoJugador::VisualizaPlan(const stateN0 &st, const list<Action> 
 void ComportamientoJugador::VisualizaPlan_N1(const stateN1 &st, const list<Action> &plan){
   AnularMatriz(mapaConPlan);
   stateN1 cst = st;
+
+  auto it = plan.begin();
+  while (it != plan.end()){
+    switch (*it){
+      case actFORWARD:
+        cst.jugador = NextCasilla(cst.jugador);
+	  mapaConPlan[cst.jugador.f][cst.jugador.c] = 1;
+	  break;
+	case actTURN_R:
+        cst.jugador.brujula = (Orientacion)((cst.jugador.brujula + 2) % 8);
+	  break;
+	case actTURN_L:
+	  cst.jugador.brujula = (Orientacion)((cst.jugador.brujula + 6) % 8);
+	  break;
+	case actSON_FORWARD:
+	  cst.sonambulo = NextCasilla(cst.sonambulo);
+	  mapaConPlan[cst.sonambulo.f][cst.sonambulo.c] = 2;
+	  break;
+	case actSON_TURN_SR:
+	  cst.sonambulo.brujula = (Orientacion)((cst.sonambulo.brujula + 1) % 8);
+	  break;
+	case actSON_TURN_SL:
+	  cst.sonambulo.brujula = (Orientacion)((cst.sonambulo.brujula + 7) % 8);
+	  break;
+    }
+    it++;
+  }
+}
+
+void ComportamientoJugador::VisualizaPlan_N2(const stateN2 &st, const list<Action> &plan){
+  AnularMatriz(mapaConPlan);
+  stateN2 cst = st;
 
   auto it = plan.begin();
   while (it != plan.end()){
