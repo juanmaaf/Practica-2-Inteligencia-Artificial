@@ -111,6 +111,52 @@ struct nodeN2{
     }
 };
 
+struct stateN3{
+    ubicacion jugador;
+    ubicacion sonambulo;
+
+    bool jugadorBikini;
+    bool jugadorZapatillas;
+    bool sonambuloBikini;
+    bool sonambuloZapatillas;
+
+    bool operator==(const stateN3 &st) const{
+        return (jugador.f == st.jugador.f && jugador.c == st.jugador.c &&
+        sonambulo.f == st.sonambulo.f && sonambulo.c == st.sonambulo.c &&
+        jugador.brujula == st.jugador.brujula && sonambulo.brujula == st.sonambulo.brujula &&
+        jugadorBikini == st.jugadorBikini && jugadorZapatillas == st.jugadorZapatillas &&
+        sonambuloBikini == st.sonambuloBikini && sonambuloZapatillas == st.sonambuloZapatillas);
+    }
+
+    bool operator<(const stateN3 &st) const
+    {
+        return (jugador.f < st.jugador.f ||
+               (jugador.f == st.jugador.f && jugador.c < st.jugador.c) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula < st.jugador.brujula) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && jugadorBikini < st.jugadorBikini) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && jugadorBikini == st.jugadorBikini && jugadorZapatillas < st.jugadorZapatillas) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && jugadorBikini == st.jugadorBikini && jugadorZapatillas == st.jugadorZapatillas && sonambuloBikini < st.sonambuloBikini) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && jugadorBikini == st.jugadorBikini && jugadorZapatillas == st.jugadorZapatillas && sonambuloBikini == st.sonambuloBikini && sonambuloZapatillas < st.sonambuloZapatillas));
+    }
+};
+
+struct nodeN3{
+  stateN2 st;
+  list<Action> secuencia;
+  int coste;
+  int heuristica;
+  int suma;
+
+  bool operator==(const nodeN3 &nd) const{
+    return (st == nd.st);
+  }
+
+  bool operator<(const nodeN3 &nd) const
+    {
+        return (suma > nd.suma);
+    }
+};
+
 class ComportamientoJugador : public Comportamiento {
   public:
     ComportamientoJugador(unsigned int size) : Comportamiento(size) {

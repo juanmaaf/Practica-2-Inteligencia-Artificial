@@ -526,8 +526,81 @@ list<Action> AnchuraSoloSonambulo_N1(const stateN1 &inicio, const ubicacion &fin
   return plan;
 }
 
-/** Implementación búsqueda en anchura nivel 1 */
+/** Implementación coste uniforme nivel 2 */
 list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
+{
+	nodeN2 current_node; 
+	current_node.st = inicio;
+	current_node.coste = 0;
+	priority_queue<nodeN2> frontier;
+	set<stateN2> explored;
+	list<Action> plan;
+
+	bool SolutionFound = (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c);
+	frontier.push(current_node);
+
+	while(!frontier.empty() and !SolutionFound){
+		frontier.pop();
+		explored.insert(current_node.st);
+
+		if(mapa[current_node.st.jugador.f][current_node.st.jugador.c] == 'K'){
+			current_node.st.jugadorBikini = true;
+			if(current_node.st.jugadorZapatillas){
+				current_node.st.jugadorZapatillas = false;
+			}
+		} else if(mapa[current_node.st.jugador.f][current_node.st.jugador.c] == 'D'){
+			current_node.st.jugadorZapatillas = true;
+			if(current_node.st.jugadorBikini){
+				current_node.st.jugadorBikini = false;
+			}
+		}
+
+		// Generar hijo actFORWARD
+		nodeN2 child_forward = current_node;
+		child_forward.coste += CalculaCoste(child_forward.st, actFORWARD, mapa);
+		child_forward.st = apply_N2(actFORWARD, current_node.st, mapa);
+		if (explored.find(child_forward.st) == explored.end()){
+			child_forward.secuencia.push_back(actFORWARD);
+			frontier.push(child_forward);
+		}
+		// Generar hijo actTURN_L
+		nodeN2 child_turnl = current_node;
+		child_turnl.coste += CalculaCoste(child_turnl.st, actTURN_L, mapa);
+		child_turnl.st = apply_N2(actTURN_L, current_node.st, mapa);
+		if (explored.find(child_turnl.st) == explored.end()){
+			child_turnl.secuencia.push_back(actTURN_L);
+			frontier.push(child_turnl);
+		}
+		// Generar hijo actTURN_R
+		nodeN2 child_turnr = current_node;
+		child_turnr.coste += CalculaCoste(child_turnr.st, actTURN_R, mapa);
+		child_turnr.st = apply_N2(actTURN_R, current_node.st, mapa);
+		if (explored.find(child_turnr.st) == explored.end()){
+			child_turnr.secuencia.push_back(actTURN_R);
+			frontier.push(child_turnr);
+		}
+
+		if (!SolutionFound && !frontier.empty()){
+      		current_node = frontier.top();
+	  		while(!frontier.empty() && explored.find(current_node.st) != explored.end()){
+				frontier.pop();
+				current_node = frontier.top();
+	  		}
+			if (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c){
+				SolutionFound = true;
+			}
+   		}	
+	}
+
+	if(SolutionFound){
+		plan = current_node.secuencia;
+	}
+
+	return plan;
+}
+
+/** Implementación coste uniforme nivel 2 */
+list<Action> AEstrella_N3(const stateN2 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
 {
 	nodeN2 current_node; 
 	current_node.st = inicio;
