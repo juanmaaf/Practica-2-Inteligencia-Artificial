@@ -355,6 +355,43 @@ stateN2 apply_N2(const Action &a, const stateN2 &st, const vector<vector<unsigne
   return st_result;
 }
 
+stateN3 apply_N3(const Action &a, const stateN3 &st, const vector<vector<unsigned char>> &mapa)
+{
+  stateN3 st_result = st;
+  ubicacion sig_ubicacion;
+  switch (a){
+  	case actFORWARD: // si casilla delante es transitable y no está ocupada por el sonámbulo
+    	sig_ubicacion = NextCasilla(st.jugador);
+    	if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion.f == st.sonambulo.f && sig_ubicacion.c == st.sonambulo.c)){
+      		st_result.jugador = sig_ubicacion;
+    	}
+    break;
+  	case actTURN_L:
+    	st_result.jugador.brujula = static_cast<Orientacion>((st_result.jugador.brujula + 6) % 8);
+    break;
+
+  	case actTURN_R:
+    	st_result.jugador.brujula = static_cast<Orientacion>((st_result.jugador.brujula + 2) % 8);
+    break;
+
+	case actSON_FORWARD:
+		sig_ubicacion = NextCasilla(st.sonambulo);
+    	if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion.f == st.jugador.f && sig_ubicacion.c == st.jugador.c)){
+      		st_result.sonambulo = sig_ubicacion;
+    	}
+	break;
+
+	case actSON_TURN_SL:
+		st_result.sonambulo.brujula = static_cast<Orientacion>((st_result.sonambulo.brujula + 7) % 8);
+	break;
+
+	case actSON_TURN_SR:
+		st_result.sonambulo.brujula = static_cast<Orientacion>((st_result.sonambulo.brujula + 1) % 8);
+	break;
+  }
+  return st_result;
+}
+
 /** Implementación búsqueda en anchura nivel 0 */
 list<Action> AnchuraSoloJugador_N0(const stateN0 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
 {
