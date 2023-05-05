@@ -225,7 +225,7 @@ bool Find(const stateN0 &item, const list<nodeN0> &lista)
 }
 
 int CalculaCoste(const stateN2 &st, const Action &accion, const vector<vector<unsigned char>> &mapa){
-	int coste = 0;
+	int coste;
 	char tipo_casilla = mapa[st.jugador.f][st.jugador.c];
 	switch(tipo_casilla){
 		case 'A':
@@ -533,7 +533,7 @@ list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &fina
 	current_node.st = inicio;
 	current_node.coste = 0;
 	priority_queue<nodeN2> frontier;
-	set<nodeN2> explored;
+	set<stateN2> explored;
 	list<Action> plan;
 
 	bool SolutionFound = (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c);
@@ -541,7 +541,7 @@ list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &fina
 
 	while(!frontier.empty() and !SolutionFound){
 		frontier.pop();
-		explored.insert(current_node);
+		explored.insert(current_node.st);
 
 		if(mapa[current_node.st.jugador.f][current_node.st.jugador.c] == 'K'){
 			current_node.st.jugadorBikini = true;
@@ -559,41 +559,36 @@ list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &fina
 		nodeN2 child_forward = current_node;
 		child_forward.coste += CalculaCoste(child_forward.st, actFORWARD, mapa);
 		child_forward.st = apply_N2(actFORWARD, current_node.st, mapa);
-		if (child_forward.st.jugador.f == final.f and child_forward.st.jugador.c == final.c){
-			current_node = child_forward;
-			current_node.secuencia.push_back(actFORWARD);
-			SolutionFound = true;
-		}
-		else if (explored.find(child_forward) == explored.end()){
+		if (explored.find(child_forward.st) == explored.end()){
 			child_forward.secuencia.push_back(actFORWARD);
 			frontier.push(child_forward);
 		}
-
-		if(!SolutionFound){
-			// Generar hijo actTURN_L
-	  		nodeN2 child_turnl = current_node;
-			child_turnl.coste += CalculaCoste(child_turnl.st, actTURN_L, mapa);
-      		child_turnl.st = apply_N2(actTURN_L, current_node.st, mapa);
-      		if (explored.find(child_turnl) == explored.end()){
-				child_turnl.secuencia.push_back(actTURN_L);
-       			frontier.push(child_turnl);
-      		}
-      		// Generar hijo actTURN_R
-	  		nodeN2 child_turnr = current_node;
-			child_turnr.coste += CalculaCoste(child_turnr.st, actTURN_R, mapa);
-      		child_turnr.st = apply_N2(actTURN_R, current_node.st, mapa);
-      		if (explored.find(child_turnr) == explored.end()){
-				child_turnr.secuencia.push_back(actTURN_R);
-        		frontier.push(child_turnr);
-      		}
+		// Generar hijo actTURN_L
+		nodeN2 child_turnl = current_node;
+		child_turnl.coste += CalculaCoste(child_turnl.st, actTURN_L, mapa);
+		child_turnl.st = apply_N2(actTURN_L, current_node.st, mapa);
+		if (explored.find(child_turnl.st) == explored.end()){
+			child_turnl.secuencia.push_back(actTURN_L);
+			frontier.push(child_turnl);
+		}
+		// Generar hijo actTURN_R
+		nodeN2 child_turnr = current_node;
+		child_turnr.coste += CalculaCoste(child_turnr.st, actTURN_R, mapa);
+		child_turnr.st = apply_N2(actTURN_R, current_node.st, mapa);
+		if (explored.find(child_turnr.st) == explored.end()){
+			child_turnr.secuencia.push_back(actTURN_R);
+			frontier.push(child_turnr);
 		}
 
 		if (!SolutionFound && !frontier.empty()){
       		current_node = frontier.top();
-	  		while(!frontier.empty() && explored.find(current_node) != explored.end()){
+	  		while(!frontier.empty() && explored.find(current_node.st) != explored.end()){
 				frontier.pop();
 				current_node = frontier.top();
 	  		}
+			if (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c){
+				SolutionFound = true;
+			}
    		}	
 	}
 
@@ -666,7 +661,14 @@ Action ComportamientoJugador::think(Sensores sensores){
       				c_state_N2.sonambulo.brujula = sensores.SONsentido;
 					c_state_N2.jugadorBikini = false;
 					c_state_N2.jugadorZapatillas = false;
+
 					// Solución para el nivel 2
+					if(mapaResultado[sensores.posF][sensores.posC] == 'K'){
+						c_state_N2.jugadorBikini = true;
+					} else if(mapaResultado[sensores.posF][sensores.posC] == 'D'){
+						c_state_N2.jugadorZapatillas = true;
+					}
+
 					plan = 	DijkstraSoloJugador_N2(c_state_N2, goal, mapaResultado);
 					if(plan.size() > 0){
 						VisualizaPlan_N2(c_state_N2,plan);

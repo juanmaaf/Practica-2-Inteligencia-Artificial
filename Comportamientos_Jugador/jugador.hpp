@@ -107,7 +107,7 @@ struct nodeN2{
 
   bool operator<(const nodeN2 &nd) const
     {
-        return (coste < nd.coste);
+        return (coste > nd.coste);
     }
 };
 
