@@ -338,22 +338,19 @@ stateN2 apply_N2(const Action &a, const stateN2 &st, const vector<vector<unsigne
   stateN2 st_result = st;
   ubicacion sig_ubicacion;
   switch (a){
-  case actFORWARD: // si casilla delante es transitable y no está ocupada por el sonámbulo
-    sig_ubicacion = NextCasilla(st.jugador);
-    if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion == st.sonambulo)){
-      st_result.jugador = sig_ubicacion;
-    }
-	st_result.coste += CalculaCoste(st_result, actFORWARD, mapa);
-    break;
-  case actTURN_L:
-    st_result.jugador.brujula = static_cast<Orientacion>((st_result.jugador.brujula + 6) % 8);
-	st_result.coste += CalculaCoste(st_result, actTURN_L, mapa);
-    break;
+	case actFORWARD: // si casilla delante es transitable y no está ocupada por el sonámbulo
+		sig_ubicacion = NextCasilla(st.jugador);
+		if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion == st.sonambulo)){
+			st_result.jugador = sig_ubicacion;
+		}
+	break;
+	case actTURN_L:
+		st_result.jugador.brujula = static_cast<Orientacion>((st_result.jugador.brujula + 6) % 8);
+	break;
 
-  case actTURN_R:
-    st_result.jugador.brujula = static_cast<Orientacion>((st_result.jugador.brujula + 2) % 8);
-	st_result.coste += CalculaCoste(st_result, actTURN_R, mapa);
-    break;
+	case actTURN_R:
+		st_result.jugador.brujula = static_cast<Orientacion>((st_result.jugador.brujula + 2) % 8);
+	break;
   }
   return st_result;
 }
@@ -534,6 +531,7 @@ list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &fina
 {
 	nodeN2 current_node; 
 	current_node.st = inicio;
+	current_node.coste = 0;
 	priority_queue<nodeN2> frontier;
 	set<nodeN2> explored;
 	list<Action> plan;
@@ -559,6 +557,7 @@ list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &fina
 
 		// Generar hijo actFORWARD
 		nodeN2 child_forward = current_node;
+		child_forward.coste += CalculaCoste(child_forward.st, actFORWARD, mapa);
 		child_forward.st = apply_N2(actFORWARD, current_node.st, mapa);
 		if (child_forward.st.jugador.f == final.f and child_forward.st.jugador.c == final.c){
 			current_node = child_forward;
@@ -573,6 +572,7 @@ list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &fina
 		if(!SolutionFound){
 			// Generar hijo actTURN_L
 	  		nodeN2 child_turnl = current_node;
+			child_turnl.coste += CalculaCoste(child_turnl.st, actTURN_L, mapa);
       		child_turnl.st = apply_N2(actTURN_L, current_node.st, mapa);
       		if (explored.find(child_turnl) == explored.end()){
 				child_turnl.secuencia.push_back(actTURN_L);
@@ -580,6 +580,7 @@ list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &fina
       		}
       		// Generar hijo actTURN_R
 	  		nodeN2 child_turnr = current_node;
+			child_turnr.coste += CalculaCoste(child_turnr.st, actTURN_R, mapa);
       		child_turnr.st = apply_N2(actTURN_R, current_node.st, mapa);
       		if (explored.find(child_turnr) == explored.end()){
 				child_turnr.secuencia.push_back(actTURN_R);
@@ -665,7 +666,6 @@ Action ComportamientoJugador::think(Sensores sensores){
       				c_state_N2.sonambulo.brujula = sensores.SONsentido;
 					c_state_N2.jugadorBikini = false;
 					c_state_N2.jugadorZapatillas = false;
-					c_state_N2.coste = 0;
 					// Solución para el nivel 2
 					plan = 	DijkstraSoloJugador_N2(c_state_N2, goal, mapaResultado);
 					if(plan.size() > 0){
