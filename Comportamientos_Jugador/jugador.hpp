@@ -82,14 +82,17 @@ struct stateN2{
     bool operator==(const stateN2 &st) const{
         return (jugador.f == st.jugador.f && jugador.c == st.jugador.c &&
         sonambulo.f == st.sonambulo.f && sonambulo.c == st.sonambulo.c &&
-        jugador.brujula == st.jugador.brujula && sonambulo.brujula == st.sonambulo.brujula);
+        jugador.brujula == st.jugador.brujula && sonambulo.brujula == st.sonambulo.brujula &&
+        jugadorBikini == st.jugadorBikini && jugadorZapatillas == st.jugadorZapatillas);
     }
 
     bool operator<(const stateN2 &st) const
     {
         return (jugador.f < st.jugador.f ||
                (jugador.f == st.jugador.f && jugador.c < st.jugador.c) ||
-               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula < st.jugador.brujula));
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula < st.jugador.brujula) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && jugadorBikini < st.jugadorBikini) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && jugadorBikini == st.jugadorBikini && jugadorZapatillas < st.jugadorZapatillas));
     }
 };
 
