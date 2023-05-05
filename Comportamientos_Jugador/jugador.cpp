@@ -5,6 +5,7 @@
 #include <cmath>
 #include <set>
 #include <stack>
+#include <queue>
 
 list<Action> AvanzaASaltosDeCaballo(){
 	list<Action> secuencia;
@@ -481,62 +482,13 @@ list<Action> AnchuraSoloSonambulo_N1(const stateN1 &inicio, const ubicacion &fin
 /** Implementación búsqueda en anchura nivel 1 */
 list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
 {
- nodeN2 current_node; 
+  nodeN2 current_node; 
   current_node.st = inicio;
-  list<nodeN2> frontier;
+  priority_queue<nodeN2> frontier;
   set<nodeN2> explored;
   list<Action> plan;
-  bool SolutionFound = (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c);
-  frontier.push_back(current_node);
 
-  while (!frontier.empty() and !SolutionFound) {
-    frontier.pop_front();
-    explored.insert(current_node);
 
-    // Generar hijo actFORWARD
-    nodeN2 child_forward = current_node;
-	
-	//child_forward.secuencia = current_node.secuencia;
-	child_forward.st = apply_N2(actFORWARD, current_node.st, mapa);
-    if (child_forward.st.jugador.f == final.f and child_forward.st.jugador.c == final.c){
-      current_node = child_forward;
-	  current_node.secuencia.push_back(actFORWARD);
-      SolutionFound = true;
-    }
-    else if (explored.find(child_forward) == explored.end()){
-		child_forward.secuencia.push_back(actFORWARD);
-		frontier.push_back(child_forward);
-    }
-
-    if (!SolutionFound) {
-      // Generar hijo actTURN_L
-	  nodeN2 child_turnl = current_node;
-      child_turnl.st = apply_N2(actTURN_L, current_node.st, mapa);
-      if (explored.find(child_turnl) == explored.end()){
-		child_turnl.secuencia.push_back(actTURN_L);
-        frontier.push_back(child_turnl);
-      }
-      // Generar hijo actTURN_R
-	  nodeN2 child_turnr = current_node;
-      child_turnr.st = apply_N2(actTURN_R, current_node.st, mapa);
-      if (explored.find(child_turnr) == explored.end()){
-		child_turnr.secuencia.push_back(actTURN_R);
-        frontier.push_back(child_turnr);
-      }
-    }
-
-    if (!SolutionFound && !frontier.empty()){
-      current_node = frontier.front();
-	  while(!frontier.empty() && explored.find(current_node) != explored.end()){
-		frontier.pop_front();
-		current_node = frontier.front();
-	  }
-    }
-  }
-
-  if(SolutionFound){
-	plan = current_node.secuencia;
-  }
 
   return plan;
 }
@@ -601,6 +553,8 @@ Action ComportamientoJugador::think(Sensores sensores){
 					c_state_N2.sonambulo.f = sensores.SONposF;
       				c_state_N2.sonambulo.c = sensores.SONposC;
       				c_state_N2.sonambulo.brujula = sensores.SONsentido;
+					c_state_N2.jugadorBikini = false;
+					c_state_N2.jugadorZapatillas = false;
 					// Solución para el nivel 2
 					plan = 	DijkstraSoloJugador_N2(c_state_N2, goal, mapaResultado);
 					if(plan.size() > 0){
@@ -728,6 +682,54 @@ void ComportamientoJugador::VisualizaPlan_N2(const stateN2 &st, const list<Actio
     }
     it++;
   }
+}
+
+int ComportamientoJugador::CalculaCoste(const stateN2 &st, const Action &accion){
+	int coste = 0;
+	char tipo_casilla = mapaResultado[st.jugador.f][st.jugador.c];
+	switch(tipo_casilla){
+		case 'A':
+			if(accion == actFORWARD){
+				if(st.jugadorBikini){
+					coste = 10;
+				}
+				else{
+					coste = 100;
+				}
+			} else if (accion == actTURN_L || accion == actTURN_R){
+				if(st.jugadorBikini){
+					coste = 5;
+				}
+				else{
+					coste = 25;
+				}
+			}
+		break;
+		case 'B':
+			if(accion == actFORWARD){
+				if(st.jugadorZapatillas){
+					coste = 15;
+				}
+				else{
+					coste = 50;
+				}
+			} else if (accion == actTURN_L || accion == actTURN_R){
+				if(st.jugadorZapatillas){
+					coste = 1;
+				}
+				else{
+					coste = 5;
+				}
+			}
+		break;
+		case 'T':
+			coste = 2;
+		break;
+		default:
+			coste = 1;
+		break;
+	}
+	return coste;
 }
 
 int ComportamientoJugador::interact(Action accion, int valor)

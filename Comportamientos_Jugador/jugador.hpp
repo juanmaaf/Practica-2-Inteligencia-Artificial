@@ -151,6 +151,7 @@ class ComportamientoJugador : public Comportamiento {
 
     Action think(Sensores sensores);
     int interact(Action accion, int valor);
+    int CalculaCoste(const stateN2 &st, const Action &accion);
 
     void VisualizaPlan(const stateN0 &st, const list<Action> &plan);
     void VisualizaPlan_N1(const stateN1 &st, const list<Action> &plan);
