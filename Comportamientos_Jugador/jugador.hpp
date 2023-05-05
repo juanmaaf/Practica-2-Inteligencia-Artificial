@@ -76,6 +76,9 @@ struct stateN2{
     ubicacion jugador;
     ubicacion sonambulo;
 
+    bool jugadorBikini;
+    bool jugadorZapatillas;
+
     bool operator==(const stateN2 &st) const{
         return (jugador.f == st.jugador.f && jugador.c == st.jugador.c &&
         sonambulo.f == st.sonambulo.f && sonambulo.c == st.sonambulo.c &&
@@ -86,10 +89,7 @@ struct stateN2{
     {
         return (jugador.f < st.jugador.f ||
                (jugador.f == st.jugador.f && jugador.c < st.jugador.c) ||
-               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula < st.jugador.brujula) ||
-               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && sonambulo.f < st.sonambulo.f) ||
-               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && sonambulo.f == st.sonambulo.f && sonambulo.c < st.sonambulo.c) ||
-               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && sonambulo.f == st.sonambulo.f && sonambulo.c == st.sonambulo.c && sonambulo.brujula < st.sonambulo.brujula));
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula < st.jugador.brujula));
     }
 };
 
@@ -136,6 +136,8 @@ class ComportamientoJugador : public Comportamiento {
       c_state_N2.sonambulo.c = 99;
       c_state_N2.sonambulo.f = 99;
       c_state_N2.sonambulo.brujula = norte;
+      c_state_N2.jugadorBikini = false;
+      c_state_N2.jugadorZapatillas = false;
 
     }
     ComportamientoJugador(std::vector< std::vector< unsigned char> > mapaR) : Comportamiento(mapaR) {
