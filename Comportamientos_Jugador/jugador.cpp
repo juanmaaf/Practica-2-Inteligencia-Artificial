@@ -340,7 +340,7 @@ stateN2 apply_N2(const Action &a, const stateN2 &st, const vector<vector<unsigne
   switch (a){
 	case actFORWARD: // si casilla delante es transitable y no está ocupada por el sonámbulo
 		sig_ubicacion = NextCasilla(st.jugador);
-		if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion == st.sonambulo)){
+		if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion.f == st.sonambulo.f && sig_ubicacion.c == st.sonambulo.c)){
 			st_result.jugador = sig_ubicacion;
 		}
 	break;
