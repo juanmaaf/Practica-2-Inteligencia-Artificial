@@ -224,6 +224,53 @@ bool Find(const stateN0 &item, const list<nodeN0> &lista)
   return (!(it == lista.end()));
 }
 
+int CalculaCoste(const stateN2 &st, const Action &accion, const vector<vector<unsigned char>> &mapa){
+	int coste = 0;
+	char tipo_casilla = mapa[st.jugador.f][st.jugador.c];
+	switch(tipo_casilla){
+		case 'A':
+			if(accion == actFORWARD){
+				if(st.jugadorBikini){
+					coste = 10;
+				}
+				else{
+					coste = 100;
+				}
+			} else if (accion == actTURN_L || accion == actTURN_R){
+				if(st.jugadorBikini){
+					coste = 5;
+				}
+				else{
+					coste = 25;
+				}
+			}
+		break;
+		case 'B':
+			if(accion == actFORWARD){
+				if(st.jugadorZapatillas){
+					coste = 15;
+				}
+				else{
+					coste = 50;
+				}
+			} else if (accion == actTURN_L || accion == actTURN_R){
+				if(st.jugadorZapatillas){
+					coste = 1;
+				}
+				else{
+					coste = 5;
+				}
+			}
+		break;
+		case 'T':
+			coste = 2;
+		break;
+		default:
+			coste = 1;
+		break;
+	}
+	return coste;
+}
 /** Devuelve el estado que se genera si el agente puede avanzar.
  * Si no puede avanzar, se devuelve como salida el mismo estado de entrada.
  */
@@ -296,13 +343,16 @@ stateN2 apply_N2(const Action &a, const stateN2 &st, const vector<vector<unsigne
     if (CasillaTransitable(sig_ubicacion, mapa) and !(sig_ubicacion == st.sonambulo)){
       st_result.jugador = sig_ubicacion;
     }
+	st_result.coste += CalculaCoste(st_result, actFORWARD, mapa);
     break;
   case actTURN_L:
     st_result.jugador.brujula = static_cast<Orientacion>((st_result.jugador.brujula + 6) % 8);
+	st_result.coste += CalculaCoste(st_result, actTURN_L, mapa);
     break;
 
   case actTURN_R:
     st_result.jugador.brujula = static_cast<Orientacion>((st_result.jugador.brujula + 2) % 8);
+	st_result.coste += CalculaCoste(st_result, actTURN_R, mapa);
     break;
   }
   return st_result;
@@ -482,13 +532,45 @@ list<Action> AnchuraSoloSonambulo_N1(const stateN1 &inicio, const ubicacion &fin
 /** Implementación búsqueda en anchura nivel 1 */
 list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &final, const vector<vector<unsigned char>> &mapa)
 {
-  nodeN2 current_node; 
-  current_node.st = inicio;
-  priority_queue<nodeN2> frontier;
-  set<nodeN2> explored;
-  list<Action> plan;
+	nodeN2 current_node; 
+	current_node.st = inicio;
+	priority_queue<nodeN2> frontier;
+	set<nodeN2> explored;
+	list<Action> plan;
 
+	bool SolutionFound = (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c);
+	frontier.push(current_node);
 
+	while(!frontier.empty() and !SolutionFound){
+		frontier.pop();
+		explored.insert(current_node);
+
+		if(mapa[current_node.st.jugador.f][current_node.st.jugador.c] == 'K'){
+			current_node.st.jugadorBikini = true;
+			if(current_node.st.jugadorZapatillas){
+				current_node.st.jugadorZapatillas = false;
+			}
+		} else if(mapa[current_node.st.jugador.f][current_node.st.jugador.c] == 'D'){
+			current_node.st.jugadorZapatillas = true;
+			if(current_node.st.jugadorBikini){
+				current_node.st.jugadorBikini = false;
+			}
+		}
+
+		// Generar hijo actFORWARD
+		nodeN2 child_forward = current_node;
+		child_forward.st = apply_N2(actFORWARD, current_node.st, mapa);
+		if (child_forward.st.jugador.f == final.f and child_forward.st.jugador.c == final.c){
+			current_node = child_forward;
+			current_node.secuencia.push_back(actFORWARD);
+			SolutionFound = true;
+		}
+		else if (explored.find(child_forward) == explored.end()){
+			child_forward.secuencia.push_back(actFORWARD);
+			frontier.push(child_forward);
+		}
+	}
+  
 
   return plan;
 }
@@ -555,6 +637,7 @@ Action ComportamientoJugador::think(Sensores sensores){
       				c_state_N2.sonambulo.brujula = sensores.SONsentido;
 					c_state_N2.jugadorBikini = false;
 					c_state_N2.jugadorZapatillas = false;
+					c_state_N2.coste = 0;
 					// Solución para el nivel 2
 					plan = 	DijkstraSoloJugador_N2(c_state_N2, goal, mapaResultado);
 					if(plan.size() > 0){
@@ -682,54 +765,6 @@ void ComportamientoJugador::VisualizaPlan_N2(const stateN2 &st, const list<Actio
     }
     it++;
   }
-}
-
-int ComportamientoJugador::CalculaCoste(const stateN2 &st, const Action &accion){
-	int coste = 0;
-	char tipo_casilla = mapaResultado[st.jugador.f][st.jugador.c];
-	switch(tipo_casilla){
-		case 'A':
-			if(accion == actFORWARD){
-				if(st.jugadorBikini){
-					coste = 10;
-				}
-				else{
-					coste = 100;
-				}
-			} else if (accion == actTURN_L || accion == actTURN_R){
-				if(st.jugadorBikini){
-					coste = 5;
-				}
-				else{
-					coste = 25;
-				}
-			}
-		break;
-		case 'B':
-			if(accion == actFORWARD){
-				if(st.jugadorZapatillas){
-					coste = 15;
-				}
-				else{
-					coste = 50;
-				}
-			} else if (accion == actTURN_L || accion == actTURN_R){
-				if(st.jugadorZapatillas){
-					coste = 1;
-				}
-				else{
-					coste = 5;
-				}
-			}
-		break;
-		case 'T':
-			coste = 2;
-		break;
-		default:
-			coste = 1;
-		break;
-	}
-	return coste;
 }
 
 int ComportamientoJugador::interact(Action accion, int valor)

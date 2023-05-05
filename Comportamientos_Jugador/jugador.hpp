@@ -78,12 +78,14 @@ struct stateN2{
 
     bool jugadorBikini;
     bool jugadorZapatillas;
+    int coste;
 
     bool operator==(const stateN2 &st) const{
         return (jugador.f == st.jugador.f && jugador.c == st.jugador.c &&
         sonambulo.f == st.sonambulo.f && sonambulo.c == st.sonambulo.c &&
         jugador.brujula == st.jugador.brujula && sonambulo.brujula == st.sonambulo.brujula &&
-        jugadorBikini == st.jugadorBikini && jugadorZapatillas == st.jugadorZapatillas);
+        jugadorBikini == st.jugadorBikini && jugadorZapatillas == st.jugadorZapatillas &&
+        coste == st.coste);
     }
 
     bool operator<(const stateN2 &st) const
@@ -92,7 +94,8 @@ struct stateN2{
                (jugador.f == st.jugador.f && jugador.c < st.jugador.c) ||
                (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula < st.jugador.brujula) ||
                (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && jugadorBikini < st.jugadorBikini) ||
-               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && jugadorBikini == st.jugadorBikini && jugadorZapatillas < st.jugadorZapatillas));
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && jugadorBikini == st.jugadorBikini && jugadorZapatillas < st.jugadorZapatillas) ||
+               (jugador.f == st.jugador.f && jugador.c == st.jugador.c && jugador.brujula == st.jugador.brujula && jugadorBikini == st.jugadorBikini && jugadorZapatillas == st.jugadorZapatillas && coste < st.coste));
     }
 };
 
@@ -141,6 +144,7 @@ class ComportamientoJugador : public Comportamiento {
       c_state_N2.sonambulo.brujula = norte;
       c_state_N2.jugadorBikini = false;
       c_state_N2.jugadorZapatillas = false;
+      c_state_N2.coste = 0;
 
     }
     ComportamientoJugador(std::vector< std::vector< unsigned char> > mapaR) : Comportamiento(mapaR) {
@@ -151,7 +155,6 @@ class ComportamientoJugador : public Comportamiento {
 
     Action think(Sensores sensores);
     int interact(Action accion, int valor);
-    int CalculaCoste(const stateN2 &st, const Action &accion);
 
     void VisualizaPlan(const stateN0 &st, const list<Action> &plan);
     void VisualizaPlan_N1(const stateN1 &st, const list<Action> &plan);
