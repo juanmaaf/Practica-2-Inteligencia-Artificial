@@ -84,23 +84,6 @@ bool verSonambuloN1(const stateN1 &estado){
 			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) ||
 			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c))
 				loVe = true;
-		case noreste:
-			if ((estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c + 1 == estado.sonambulo.c) || 
-			(estado.jugador.f  == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) ||
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c))
-				loVe = true;
 		break;
 		case este:	
 			if ((estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
@@ -118,24 +101,6 @@ bool verSonambuloN1(const stateN1 &estado){
 			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
 			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) ||
 			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c))
-				loVe = true;
-		break;
-		case sureste:
-			if ((estado.jugador.f == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) ||
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c))
 				loVe = true;
 		break;
 		case sur:
@@ -156,24 +121,6 @@ bool verSonambuloN1(const stateN1 &estado){
 			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c))
 				loVe = true;
 		break;
-		case suroeste:
-			if ((estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f  == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) ||
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c))
-				loVe = true;
-		break;
 		case oeste:
 			if ((estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
 			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
@@ -190,24 +137,6 @@ bool verSonambuloN1(const stateN1 &estado){
 			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
 			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) ||
 			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c))
-				loVe = true;
-		break;
-		case noroeste:
-			if ((estado.jugador.f == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) ||
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c))
 				loVe = true;
 		break;
 	}
@@ -235,23 +164,6 @@ bool verSonambuloN3(const stateN3 &estado){
 			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) ||
 			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c))
 				loVe = true;
-		case noreste:
-			if ((estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c + 1 == estado.sonambulo.c) || 
-			(estado.jugador.f  == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) ||
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c))
-				loVe = true;
 		break;
 		case este:	
 			if ((estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
@@ -269,24 +181,6 @@ bool verSonambuloN3(const stateN3 &estado){
 			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
 			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) ||
 			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c))
-				loVe = true;
-		break;
-		case sureste:
-			if ((estado.jugador.f == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +3 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +2 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c +1 == estado.sonambulo.c) ||
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c))
 				loVe = true;
 		break;
 		case sur:
@@ -307,24 +201,6 @@ bool verSonambuloN3(const stateN3 &estado){
 			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c))
 				loVe = true;
 		break;
-		case suroeste:
-			if ((estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f  == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c  == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f +3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f +2 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) ||
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c))
-				loVe = true;
-		break;
 		case oeste:
 			if ((estado.jugador.f +1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
 			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
@@ -341,24 +217,6 @@ bool verSonambuloN3(const stateN3 &estado){
 			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
 			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) ||
 			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c))
-				loVe = true;
-		break;
-		case noroeste:
-			if ((estado.jugador.f == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c) || 
-			(estado.jugador.f == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f -1 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f -2 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -3 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -2 == estado.sonambulo.c) || 
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c -1 == estado.sonambulo.c) ||
-			(estado.jugador.f -3 == estado.sonambulo.f && estado.jugador.c == estado.sonambulo.c))
 				loVe = true;
 		break;
 	}
