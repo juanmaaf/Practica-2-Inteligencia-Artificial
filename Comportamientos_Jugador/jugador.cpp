@@ -1177,7 +1177,7 @@ Action ComportamientoJugador::think(Sensores sensores){
  		}
 
  		if (hayPlan and plan.size()>0){
-  			cout << "Ejecutando siguietne acción del plan" << endl;
+  			cout << "Ejecutando siguiente acción del plan" << endl;
  			accion = plan.front();
   			plan.pop_front();
  		}
