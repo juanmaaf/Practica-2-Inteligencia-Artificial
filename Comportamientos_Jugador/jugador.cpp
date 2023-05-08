@@ -889,7 +889,9 @@ list<Action> DijkstraSoloJugador_N2(const stateN2 &inicio, const ubicacion &fina
       		current_node = frontier.top();
 	  		while(!frontier.empty() && explored.find(current_node.st) != explored.end()){
 				frontier.pop();
-				current_node = frontier.top();
+				if(!frontier.empty()){
+					current_node = frontier.top();
+				}
 	  		}
 			if (current_node.st.jugador.f == final.f and current_node.st.jugador.c == final.c){
 				SolutionFound = true;
@@ -910,7 +912,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 	current_node.st = inicio;
 	current_node.coste = 0;
 	current_node.heuristica = HeuristicaSonambulo_N3(current_node.st, final);
-	current_node.suma = current_node.heuristica;
+	current_node.suma = current_node.heuristica + current_node.coste;
 	priority_queue<nodeN3> frontier;
 	set<stateN3> explored;
 	list<Action> plan;
@@ -946,99 +948,97 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 			}
 		}
 
-		if(!SolutionFound){
-			if(verSonambuloN3(current_node.st)){
-				// Generar hijo actSONFORWARD
-				nodeN3 childson_forward = current_node;
-				childson_forward.coste += CalculaCoste_N3(childson_forward.st, actSON_FORWARD, mapa);
-				childson_forward.heuristica = HeuristicaSonambulo_N3(childson_forward.st, final);
-				childson_forward.suma = childson_forward.coste + childson_forward.heuristica;
-				childson_forward.st = apply_N3(actSON_FORWARD, current_node.st, mapa);
-				if (explored.find(childson_forward.st) == explored.end()){
-					childson_forward.secuencia.push_back(actSON_FORWARD);
-					frontier.push(childson_forward);
-				}
-				// Generar hijo actSON_TURN_SL
-				nodeN3 childson_turnl = current_node;
-				childson_turnl.coste += CalculaCoste_N3(childson_turnl.st, actSON_TURN_SL, mapa);
-				childson_turnl.heuristica = HeuristicaSonambulo_N3(childson_turnl.st, final);
-				childson_turnl.suma = childson_turnl.coste + childson_turnl.heuristica;
-				childson_turnl.st = apply_N3(actSON_TURN_SL, current_node.st, mapa);
-				if (explored.find(childson_turnl.st) == explored.end()){
-					childson_turnl.secuencia.push_back(actSON_TURN_SL);
-					frontier.push(childson_turnl);
-				}
-				// Generar hijo actSON_TURN_SR
-				nodeN3 childson_turnr = current_node;
-				childson_turnr.coste += CalculaCoste_N3(childson_turnr.st, actSON_TURN_SR, mapa);
-				childson_turnr.heuristica = HeuristicaSonambulo_N3(childson_turnr.st, final);
-				childson_turnr.suma = childson_turnl.coste + childson_turnr.heuristica;
-				childson_turnr.st = apply_N3(actSON_TURN_SR, current_node.st, mapa);
-				if (explored.find(childson_turnr.st) == explored.end()){
-					childson_turnr.secuencia.push_back(actSON_TURN_SR);
-					frontier.push(childson_turnr);
-				}
-				// Generar hijo actFORWARD
-				nodeN3 child_forward = current_node;
-				child_forward.coste += CalculaCoste_N3(child_forward.st, actFORWARD, mapa);
-				child_forward.heuristica = HeuristicaSonambulo_N3(child_forward.st, final);
-				child_forward.suma = child_forward.coste + child_forward.heuristica;
-				child_forward.st = apply_N3(actFORWARD, current_node.st, mapa);
-				if (explored.find(child_forward.st) == explored.end()){
-					child_forward.secuencia.push_back(actFORWARD);
-					frontier.push(child_forward);
-				}
-				// Generar hijo actTURN_L
-				nodeN3 child_turnl = current_node;
-				child_turnl.coste += CalculaCoste_N3(child_turnl.st, actTURN_L, mapa);
-				child_turnl.heuristica = HeuristicaSonambulo_N3(child_turnl.st, final);
-				child_turnl.suma = child_turnl.coste + child_turnl.heuristica;
-				child_turnl.st = apply_N3(actTURN_L, current_node.st, mapa);
-				if (explored.find(child_turnl.st) == explored.end()){
-					child_turnl.secuencia.push_back(actTURN_L);
-					frontier.push(child_turnl);
-				}
-				// Generar hijo actTURN_R
-				nodeN3 child_turnr = current_node;
-				child_turnr.coste += CalculaCoste_N3(child_turnr.st, actTURN_R, mapa);
-				child_turnr.heuristica = HeuristicaSonambulo_N3(child_turnr.st, final);
-				child_turnr.suma = child_turnr.coste + child_turnr.heuristica;
-				child_turnr.st = apply_N3(actTURN_R, current_node.st, mapa);
-				if (explored.find(child_turnr.st) == explored.end()){
-					child_turnr.secuencia.push_back(actTURN_R);
-					frontier.push(child_turnr);
-				}
-			} else{
-				// Generar hijo actFORWARD
-				nodeN3 child_forward = current_node;
-				child_forward.coste += CalculaCoste_N3(child_forward.st, actFORWARD, mapa);
-				child_forward.heuristica = HeuristicaSonambulo_N3(child_forward.st, final);
-				child_forward.suma = child_forward.coste + child_forward.heuristica;
-				child_forward.st = apply_N3(actFORWARD, current_node.st, mapa);
-				if (explored.find(child_forward.st) == explored.end()){
-					child_forward.secuencia.push_back(actFORWARD);
-					frontier.push(child_forward);
-				}
-				// Generar hijo actTURN_L
-				nodeN3 child_turnl = current_node;
-				child_turnl.coste += CalculaCoste_N3(child_turnl.st, actTURN_L, mapa);
-				child_turnl.heuristica = HeuristicaSonambulo_N3(child_turnl.st, final);
-				child_turnl.suma = child_turnl.coste + child_turnl.heuristica;
-				child_turnl.st = apply_N3(actTURN_L, current_node.st, mapa);
-				if (explored.find(child_turnl.st) == explored.end()){
-					child_turnl.secuencia.push_back(actTURN_L);
-					frontier.push(child_turnl);
-				}
-				// Generar hijo actTURN_R
-				nodeN3 child_turnr = current_node;
-				child_turnr.coste += CalculaCoste_N3(child_turnr.st, actTURN_R, mapa);
-				child_turnr.heuristica = HeuristicaSonambulo_N3(child_turnr.st, final);
-				child_turnr.suma = child_turnr.coste + child_turnr.heuristica;
-				child_turnr.st = apply_N3(actTURN_R, current_node.st, mapa);
-				if (explored.find(child_turnr.st) == explored.end()){
-					child_turnr.secuencia.push_back(actTURN_R);
-					frontier.push(child_turnr);
-				}
+		if(verSonambuloN3(current_node.st)){
+			// Generar hijo actSONFORWARD
+			nodeN3 childson_forward = current_node;
+			childson_forward.coste += CalculaCoste_N3(childson_forward.st, actSON_FORWARD, mapa);
+			childson_forward.heuristica = HeuristicaSonambulo_N3(childson_forward.st, final);
+			childson_forward.suma = childson_forward.coste + childson_forward.heuristica;
+			childson_forward.st = apply_N3(actSON_FORWARD, current_node.st, mapa);
+			if (explored.find(childson_forward.st) == explored.end()){
+				childson_forward.secuencia.push_back(actSON_FORWARD);
+				frontier.push(childson_forward);
+			}
+			// Generar hijo actSON_TURN_SL
+			nodeN3 childson_turnl = current_node;
+			childson_turnl.coste += CalculaCoste_N3(childson_turnl.st, actSON_TURN_SL, mapa);
+			childson_turnl.heuristica = HeuristicaSonambulo_N3(childson_turnl.st, final);
+			childson_turnl.suma = childson_turnl.coste + childson_turnl.heuristica;
+			childson_turnl.st = apply_N3(actSON_TURN_SL, current_node.st, mapa);
+			if (explored.find(childson_turnl.st) == explored.end()){
+				childson_turnl.secuencia.push_back(actSON_TURN_SL);
+				frontier.push(childson_turnl);
+			}
+			// Generar hijo actSON_TURN_SR
+			nodeN3 childson_turnr = current_node;
+			childson_turnr.coste += CalculaCoste_N3(childson_turnr.st, actSON_TURN_SR, mapa);
+			childson_turnr.heuristica = HeuristicaSonambulo_N3(childson_turnr.st, final);
+			childson_turnr.suma = childson_turnl.coste + childson_turnr.heuristica;
+			childson_turnr.st = apply_N3(actSON_TURN_SR, current_node.st, mapa);
+			if (explored.find(childson_turnr.st) == explored.end()){
+				childson_turnr.secuencia.push_back(actSON_TURN_SR);
+				frontier.push(childson_turnr);
+			}
+			// Generar hijo actFORWARD
+			nodeN3 child_forward = current_node;
+			child_forward.coste += CalculaCoste_N3(child_forward.st, actFORWARD, mapa);
+			child_forward.heuristica = HeuristicaSonambulo_N3(child_forward.st, final);
+			child_forward.suma = child_forward.coste + child_forward.heuristica;
+			child_forward.st = apply_N3(actFORWARD, current_node.st, mapa);
+			if (explored.find(child_forward.st) == explored.end()){
+				child_forward.secuencia.push_back(actFORWARD);
+				frontier.push(child_forward);
+			}
+			// Generar hijo actTURN_L
+			nodeN3 child_turnl = current_node;
+			child_turnl.coste += CalculaCoste_N3(child_turnl.st, actTURN_L, mapa);
+			child_turnl.heuristica = HeuristicaSonambulo_N3(child_turnl.st, final);
+			child_turnl.suma = child_turnl.coste + child_turnl.heuristica;
+			child_turnl.st = apply_N3(actTURN_L, current_node.st, mapa);
+			if (explored.find(child_turnl.st) == explored.end()){
+				child_turnl.secuencia.push_back(actTURN_L);
+				frontier.push(child_turnl);
+			}
+			// Generar hijo actTURN_R
+			nodeN3 child_turnr = current_node;
+			child_turnr.coste += CalculaCoste_N3(child_turnr.st, actTURN_R, mapa);
+			child_turnr.heuristica = HeuristicaSonambulo_N3(child_turnr.st, final);
+			child_turnr.suma = child_turnr.coste + child_turnr.heuristica;
+			child_turnr.st = apply_N3(actTURN_R, current_node.st, mapa);
+			if (explored.find(child_turnr.st) == explored.end()){
+				child_turnr.secuencia.push_back(actTURN_R);
+				frontier.push(child_turnr);
+			}
+		} else{
+			// Generar hijo actFORWARD
+			nodeN3 child_forward = current_node;
+			child_forward.coste += CalculaCoste_N3(child_forward.st, actFORWARD, mapa);
+			child_forward.heuristica = HeuristicaSonambulo_N3(child_forward.st, final);
+			child_forward.suma = child_forward.coste + child_forward.heuristica;
+			child_forward.st = apply_N3(actFORWARD, current_node.st, mapa);
+			if (explored.find(child_forward.st) == explored.end()){
+				child_forward.secuencia.push_back(actFORWARD);
+				frontier.push(child_forward);
+			}
+			// Generar hijo actTURN_L
+			nodeN3 child_turnl = current_node;
+			child_turnl.coste += CalculaCoste_N3(child_turnl.st, actTURN_L, mapa);
+			child_turnl.heuristica = HeuristicaSonambulo_N3(child_turnl.st, final);
+			child_turnl.suma = child_turnl.coste + child_turnl.heuristica;
+			child_turnl.st = apply_N3(actTURN_L, current_node.st, mapa);
+			if (explored.find(child_turnl.st) == explored.end()){
+				child_turnl.secuencia.push_back(actTURN_L);
+				frontier.push(child_turnl);
+			}
+			// Generar hijo actTURN_R
+			nodeN3 child_turnr = current_node;
+			child_turnr.coste += CalculaCoste_N3(child_turnr.st, actTURN_R, mapa);
+			child_turnr.heuristica = HeuristicaSonambulo_N3(child_turnr.st, final);
+			child_turnr.suma = child_turnr.coste + child_turnr.heuristica;
+			child_turnr.st = apply_N3(actTURN_R, current_node.st, mapa);
+			if (explored.find(child_turnr.st) == explored.end()){
+				child_turnr.secuencia.push_back(actTURN_R);
+				frontier.push(child_turnr);
 			}
 		}
 
@@ -1050,7 +1050,7 @@ list<Action> AEstrella_N3(const stateN3 &inicio, const ubicacion &final, const v
 					current_node = frontier.top();
 				}
 	  		}
-			if (current_node.st.sonambulo.f == final.f && current_node.st.sonambulo.c == final.c){
+			if (current_node.st.sonambulo.f == final.f and current_node.st.sonambulo.c == final.c){
 				SolutionFound = true;
 			}
    		}
